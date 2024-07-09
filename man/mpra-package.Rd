@@ -1,12 +1,12 @@
 \name{mpra-package}
 \alias{mpra-package}
-\alias{mpra}
+\alias{bcmpralm}
 \docType{package}
 \title{
-\packageTitle{mpra}
+\packageTitle{bcmpralm}
 }
 \description{
-\packageDescription{mpra}
+\packageDescription{bcmpralm}
 }
 \details{
   This package provides tools for the analysis of MPRA data. The primary
@@ -18,9 +18,9 @@
   in the \code{limma} package.
 }
 \author{
-\packageAuthor{mpra}
+\packageAuthor{bcmpralm}
 
-Maintainer: \packageMaintainer{mpra}
+Maintainer: \packageMaintainer{bcmpralm}
 }
 \references{
   Myint, Leslie, Dimitrios G. Avramopoulos, Loyal A. Goff, and Kasper
