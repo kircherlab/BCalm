@@ -24,6 +24,16 @@ mpralm <- function(object, design, aggregate = c("mean", "sum", "none"),
     return(fit)
 }
 
+fit_elements <- function(object, normalize=TRUE, block = NULL, ...) {
+  design <- data.frame(rep(1, ncol(object)))
+  mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
+  						normalize = normalize, model_type = "indep_groups", 
+						plot = FALSE, block = block, ...)
+  mpralm_fit$logratio <- mpralm_fit$coefficients
+  mpralm_fit$label <- getLabel(object)
+  return(mpralm_fit)
+}
+
 get_precision_weights <- function(logr, design, log_dna, span = 0.4,
                                   plot = TRUE, ...) {
     if (nrow(design) != ncol(logr)) {

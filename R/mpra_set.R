@@ -20,20 +20,22 @@ setValidity("MPRASet", function(object) {
 
 MPRASet <- function(DNA = new("matrix"), RNA = new("matrix"),
                     barcode = new("character"), eid = new("character"),
-                    eseq = new("character"), ...) {
+                    eseq = new("character"), label = new("character"), ...) {
 	eid <- eid[order(eid)]
 	DNA <- DNA[order(rownames(DNA)), ]
 	RNA <- RNA[order(rownames(RNA)), ]
+	label <- label[order(rownames(label))]
     assays <- SimpleList(DNA = DNA, RNA = RNA)
-    if (length(barcode)==0 & length(eseq)==0) {
-        rowData <- DataFrame(eid = eid)
-    } else if (length(barcode)==0 & length(eseq)!=0) {
-        rowData <- DataFrame(eid = eid, eseq = eseq)
-    } else if (length(barcode)!=0 & length(eseq)==0) {
-        rowData <- DataFrame(eid = eid, barcode = barcode)
-    } else {
-        rowData <- DataFrame(eid = eid, barcode = barcode, eseq = eseq)
-    }
+    rowData <- DataFrame(eid = eid)
+	if (length(barcode) != 0) {
+		rowData$barcode <- barcode
+	}
+	if (length(eseq) != 0) {
+		rowData$eseq <- eseq
+	}
+	if (length(label) != 0) {
+		rowData$label <- label
+	}
     new("MPRASet",
         SummarizedExperiment(assays = assays, rowData = rowData, ...)
     )
@@ -90,4 +92,9 @@ getEid <- function(object) {
 getEseq <- function(object) {
     .is_mpra_or_stop(object)
     rowData(object)$eseq
+}
+
+getLabel <- function(object) {
+	.is_mpra_or_stop(object)
+	rowData(object)$label
 }
