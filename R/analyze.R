@@ -1,4 +1,4 @@
-plot_groups <- function(mpra_fit, percentile, neg_label=NULL, test_label=NULL) {
+plot_groups <- function(mpra_fit, percentile=NULL, neg_label=NULL, test_label=NULL) {
 	if (! "label" %in% names(mpra_fit)) {
 		stop("Your mpra fit object should contain a label column.")
 	}
@@ -7,6 +7,10 @@ plot_groups <- function(mpra_fit, percentile, neg_label=NULL, test_label=NULL) {
 	}
 	if (! is.null(test_label) && ! test_label %in% unique(mpra_fit$label)) {
 		stop("The test label you provided is not in the label column of the mpra fit object.")
+	}
+	if (is.null(percentile) && ! is.null(neg_label)) {
+		percentile <- 0.95
+		print("No percentile provided, using 0.95.")
 	}
 
 	df <- as.data.frame(mpra_fit) 
