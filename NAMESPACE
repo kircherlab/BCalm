@@ -12,6 +12,7 @@ importFrom("tidyr", "unite")
 
 exportClasses("MPRASet")
 exportMethods("show")
-export(MPRASet, getRNA, getDNA, getBarcode, getEid, getEseq)
+export(MPRASet, getRNA, getDNA, getBarcode, getEid, getEseq, getLabel)
 export(mpralm, get_precision_weights, compute_logratio, normalize_counts)
 export(downsample_barcodes, create_dna_df, create_rna_df)
+export(plot_groups)
