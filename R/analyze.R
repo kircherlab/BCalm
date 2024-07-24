@@ -43,7 +43,7 @@ plot_groups <- function(mpra_fit, percentile=NULL, neg_label=NULL, test_label=NU
 	return(plot)
 }
 
-mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label, side="both") {
+mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, side="both") {
 	if (! "label" %in% names(mpra_fit)) {
 		stop("Your mpra fit object should contain a label column.")
 	}
@@ -53,24 +53,26 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label, side="b
 	if (is.null(neg_label)) {
 		stop("You need to provide the label of the negative class.")
 	}
-	if (is.null(test_label)) {
-		stop("You need to provide the label of the test class.")
-	}
 	if (! neg_label %in% unique(mpra_fit$label)) {
 		stop("The negative label you provided is not in the label column of the mpra fit object.")
 	}
-	if (! test_label %in% unique(mpra_fit$label)) {
+	if (! is.null(test_label) && ! test_label %in% unique(mpra_fit$label)) {
 		stop("The test label you provided is not in the label column of the mpra fit object.")
 	}
 	if (is.null(percentile)) {
 		percentile <- 0.95
 		print("No percentile provided, using 0.95.")
 	}
+	if (! is.null(test_label)) {
+		to_test <- mpra_fit[mpra_fit$label == test_label, ]
+	} else {
+		to_test <- mpra_fit[mpra_fit$label != neg_label, ]
+	}
 
 	result <- NULL
 	if (side == "both" || side == "right") {
 		percentile_up <- quantile(mpra_fit$logratio[mpra_fit$label == neg_label], percentile)
-		tr_up <- treat(mpra_fit, lfc=percentile_up)
+		tr_up <- treat(to_test, lfc=percentile_up)
 		toptr_up <- topTreat(tr_up, coef = 1, number = Inf)
 		# topTreat tests for logratios higher than the threshold, or lower than the negative of the threshold.
 		# We instead want the upper and lower percentile, so we call topTreat twice, once for the upper and once for the lower percentile.
@@ -81,7 +83,7 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label, side="b
 
 	if (side == "both" || side == "left") {
 		percentile_down <- quantile(mpra_fit$logratio[mpra_fit$label == neg_label], 1 - percentile)
-		tr_down <- treat(mpra_fit, lfc=percentile_down)
+		tr_down <- treat(to_test, lfc=percentile_down)
 		toptr_down <- topTreat(tr_down, coef = 1, number = Inf)
 		# Here we filter for the lower percentile.
 		toptr_down <- toptr_down %>% filter(logFC < 0)
