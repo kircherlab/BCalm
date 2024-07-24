@@ -24,7 +24,6 @@ MPRASet <- function(DNA = new("matrix"), RNA = new("matrix"),
 	eid <- eid[order(eid)]
 	DNA <- DNA[order(rownames(DNA)), ]
 	RNA <- RNA[order(rownames(RNA)), ]
-	label <- label[order(names(label))]
     assays <- SimpleList(DNA = DNA, RNA = RNA)
     rowData <- DataFrame(eid = eid)
 	if (length(barcode) != 0) {
@@ -34,6 +33,7 @@ MPRASet <- function(DNA = new("matrix"), RNA = new("matrix"),
 		rowData$eseq <- eseq
 	}
 	if (length(label) != 0) {
+		label <- label[order(names(label))]
 		rowData$label <- label
 	}
     new("MPRASet",
