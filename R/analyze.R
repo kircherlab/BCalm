@@ -63,15 +63,24 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, si
 		percentile <- 0.95
 		print("No percentile provided, using 0.95.")
 	}
-	if (! is.null(test_label)) {
-		to_test <- mpra_fit[mpra_fit$label == test_label, ]
-	} else {
-		to_test <- mpra_fit[mpra_fit$label != neg_label, ]
-	}
 
 	result <- NULL
+
+	# We are shifting the logratios so that the mean of the negative class is 0.
+	# This way we don't get into trouble with negative logFC thresholds.
+	neg_mean <- mean(mpra_fit$logratio[mpra_fit$label == neg_label])
+	shifted_fit <- mpra_fit
+	shifted_fit$logratio <- mpra_fit$logratio - neg_mean
+	shifted_fit$coefficients <- mpra_fit$coefficients - neg_mean
+
+	if (! is.null(test_label)) {
+		to_test <- shifted_fit[shifted_fit$label == test_label, ]
+	} else {
+		to_test <- shifted_fit[shifted_fit$label != neg_label, ]
+	}
+
 	if (side == "both" || side == "right") {
-		percentile_up <- quantile(mpra_fit$logratio[mpra_fit$label == neg_label], percentile)
+		percentile_up <- quantile(shifted_fit$logratio[shifted_fit$label == neg_label], percentile)
 		tr_up <- treat(to_test, lfc=percentile_up)
 		toptr_up <- topTreat(tr_up, coef = 1, number = Inf)
 		# topTreat tests for logratios higher than the threshold, or lower than the negative of the threshold.
@@ -82,7 +91,7 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, si
 	}
 
 	if (side == "both" || side == "left") {
-		percentile_down <- quantile(mpra_fit$logratio[mpra_fit$label == neg_label], 1 - percentile)
+		percentile_down <- quantile(shifted_fit$logratio[shifted_fit$label == neg_label], 1 - percentile)
 		tr_down <- treat(to_test, lfc=percentile_down)
 		toptr_down <- topTreat(tr_down, coef = 1, number = Inf)
 		# Here we filter for the lower percentile.
@@ -90,6 +99,9 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, si
 		result <- rbind(result, toptr_down)
 	}
 
+	result$logFC <- result$logFC + neg_mean
+	result$AveExpr <- result$AveExpr + neg_mean
 	result$variant_id <- row.names(result)
+
 	return(result)
 }

@@ -13,7 +13,7 @@ mpralm <- function(object, design, aggregate = c("mean", "sum", "none"),
     if (model_type=="indep_groups") {
         fit <- .fit_standard(object = object, design = design,
                              aggregate = aggregate, normalize = normalize,
-                             plot = plot, ...)
+                             plot = plot, block = block, ...)
     } else if (model_type=="corr_groups") {
         if (is.null(block)) {
             stop("'block' must be supplied for the corr_groups model type")
@@ -118,7 +118,7 @@ normalize_counts <- function(object, block = NULL) {
 }
 
 .fit_standard <- function(object, design, aggregate = c("mean", "sum", "none"),
-                          normalize = TRUE, return_elist = FALSE,
+                          normalize = TRUE, return_elist = FALSE, block = NULL,
                           return_weights = FALSE, plot = TRUE, span = 0.4, ...) {
     .is_mpra_or_stop(object)
     if (nrow(design) != ncol(object)) {
@@ -128,11 +128,12 @@ normalize_counts <- function(object, block = NULL) {
     aggregate <- match.arg(aggregate)
 
     if (normalize) {
-        object <- normalize_counts(object)
+        object <- normalize_counts(object, block)
     }
     logr <- compute_logratio(object, aggregate = aggregate)
+	
     log_dna <- log2(getDNA(object, aggregate = TRUE) + 1)
-    
+
     ## Estimate mean-variance relationship to get precision weights
     w <- get_precision_weights(logr = logr, design = design, log_dna = log_dna,
                                span = span, plot = plot, ...)
@@ -161,7 +162,7 @@ normalize_counts <- function(object, block = NULL) {
     aggregate <- match.arg(aggregate)
 
     if (normalize) {
-        object <- normalize_counts(object)
+        object <- normalize_counts(object, block)
     }
     logr <- compute_logratio(object, aggregate = aggregate)
     log_dna <- log2(getDNA(object, aggregate = TRUE) + 1)

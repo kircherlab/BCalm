@@ -36,18 +36,20 @@ downsample_barcodes <- function(df, id_column_name="name") {
 }
 
 create_dna_df <- function(df, id_column_name="variant_id", allele_column_name=NULL) {
-	if (is.null(allele_column_name) && !is.null(df$allele)) {
+	suppressWarnings({
+		if (is.null(allele_column_name) && !is.null(df$allele)) {
 		allele_column_name <- "allele"
-	}
+	}})
 		
 	df_dna <- .pivot_df(df, id_column_name, allele_column_name, "DNA")
 	return(df_dna)
 }
 
 create_rna_df <- function(df, id_column_name="variant_id", allele_column_name=NULL) {
-	if (is.null(allele_column_name) && !is.null(df$allele)) {
-		allele_column_name <- "allele"
-	}
+	suppressWarnings({
+		if (is.null(allele_column_name) && !is.null(df$allele)) {
+			allele_column_name <- "allele"
+	}})
 
 	df_rna <- .pivot_df(df, id_column_name, allele_column_name, "RNA")
 	return(df_rna)
