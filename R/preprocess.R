@@ -1,11 +1,16 @@
-downsample_barcodes <- function(df, id_column_name="name") {
+downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
+	if (!id_column_name %in% names(df)) {
+		warning(paste("Column", id_column_name, "does not exist in the DataFrame.
+			Provide an existing column name to the variable id_column_name. Returning the original DataFrame."))
+		return(df)  # Return the original DataFrame if the column does not exist
+	}
 	if (any(names(df) == "allele")) {
 
 		# Calculate the 0.95th quantile of the number of barcodes across all groups
 		max_bc <- df %>%
 			group_by(!!sym(id_column_name), allele) %>%
 			summarise(n = n(), .groups = 'drop') %>%
-			summarise(max_bc = quantile(n, 0.95)) %>%
+			summarise(max_bc = quantile(n, percentile)) %>%
 			pull(max_bc)
 		
 		# Downsample barcodes
@@ -19,7 +24,7 @@ downsample_barcodes <- function(df, id_column_name="name") {
 		max_bc <- df %>%
 			group_by(!!sym(id_column_name)) %>%
 			summarise(n = n(), .groups = 'drop') %>%
-			summarise(max_bc = quantile(n, 0.95)) %>%
+			summarise(max_bc = quantile(n, percentile)) %>%
 			pull(max_bc)
 		
 		# Downsample barcodes
@@ -67,12 +72,12 @@ create_var_df <- function(df, map_df) {
 	
 	# Merge on REF
 	df_ref <- merge(df, map_df, by.x = "name", by.y = "REF", all.x = FALSE)
-	df_ref$allele <- "REF"
+	df_ref$allele <- "ref"
 	df_ref$ALT <- NULL
 
 	# Merge on ALT
 	df_alt <- merge(df, map_df, by.x = "name", by.y = "ALT", all.x = FALSE)
-	df_alt$allele <- "ALT"
+	df_alt$allele <- "alt"
 	df_alt$REF <- NULL
 
 	# Combine the results
