@@ -68,6 +68,11 @@ create_var_df <- function(df, map_df) {
 	if (!all(c("name") %in% colnames(df))) {
 		stop("df must contain column 'name'")
 	}
+
+	if (!any(df$name %in% map_df$REF) & !any(df$name %in% map_df$ALT)) {
+		stop("No matches found between the 'name' column in 'df' and the 'REF'/'ALT' columns in 'map_df'. Please ensure that these columns have matching values.")
+	}
+
 	map_df <- map_df %>% select(ID, REF, ALT)
 	
 	# Merge on REF
