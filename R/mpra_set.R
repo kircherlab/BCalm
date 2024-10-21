@@ -20,20 +20,22 @@ setValidity("MPRASet", function(object) {
 
 MPRASet <- function(DNA = new("matrix"), RNA = new("matrix"),
                     barcode = new("character"), eid = new("character"),
-                    eseq = new("character"), ...) {
-	eid <- eid[order(eid)]
-	DNA <- DNA[order(rownames(DNA)), ]
-	RNA <- RNA[order(rownames(RNA)), ]
+                    eseq = new("character"), label = new("character"), ...) {
+	#eid <- eid[order(eid)]
+	DNA <- DNA[eid, ]
+	RNA <- RNA[eid, ]
     assays <- SimpleList(DNA = DNA, RNA = RNA)
-    if (length(barcode)==0 & length(eseq)==0) {
-        rowData <- DataFrame(eid = eid)
-    } else if (length(barcode)==0 & length(eseq)!=0) {
-        rowData <- DataFrame(eid = eid, eseq = eseq)
-    } else if (length(barcode)!=0 & length(eseq)==0) {
-        rowData <- DataFrame(eid = eid, barcode = barcode)
-    } else {
-        rowData <- DataFrame(eid = eid, barcode = barcode, eseq = eseq)
-    }
+    rowData <- DataFrame(eid = eid)
+	if (length(barcode) != 0) {
+		rowData$barcode <- barcode
+	}
+	if (length(eseq) != 0) {
+		rowData$eseq <- eseq
+	}
+	if (length(label) != 0) {
+		label <- label[eid]
+		rowData$label <- label
+	}
     new("MPRASet",
         SummarizedExperiment(assays = assays, rowData = rowData, ...)
     )
@@ -53,10 +55,10 @@ getDNA <- function(object, aggregate = FALSE) {
         by_out <- by(raw, eid, colSums, na.rm = FALSE)
         agg <- do.call("rbind", by_out)
         rownames(agg) <- names(by_out)
-		agg <- agg[order(rownames(agg)), ]
+		#agg <- agg[order(rownames(agg)), ]
         return(agg)
     } else {
-		raw <- raw[order(rownames(raw)), ]
+		#raw <- raw[order(rownames(raw)), ]
         return(raw)
     }
 }
@@ -69,10 +71,10 @@ getRNA <- function(object, aggregate = FALSE) {
         by_out <- by(raw, eid, colSums, na.rm = FALSE)
         agg <- do.call("rbind", by_out)
         rownames(agg) <- names(by_out)
-        agg <- agg[order(rownames(agg)), ]
+        #agg <- agg[order(rownames(agg)), ]
         return(agg)
     } else {
-		raw <- raw[order(rownames(raw)), ]
+		#raw <- raw[order(rownames(raw)), ]
         return(raw)
     }
 }
@@ -90,4 +92,9 @@ getEid <- function(object) {
 getEseq <- function(object) {
     .is_mpra_or_stop(object)
     rowData(object)$eseq
+}
+
+getLabel <- function(object) {
+	.is_mpra_or_stop(object)
+	rowData(object)$label
 }

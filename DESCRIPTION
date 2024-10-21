@@ -1,5 +1,5 @@
-Package: bcmpralm
-Version: 1.13.1
+Package: BCalm
+Version: 0.1.0
 Title: Analyze massively parallel reporter assays
 Description: Tools for data management, count preprocessing, and differential analysis in massively parallel report assays (MPRA).
 Authors@R: c(
@@ -21,13 +21,16 @@ Imports:
 	scales,
 	stats,
 	graphics,
-	statmod
+	statmod, 
+	tidyr
 Collate:
 	mpra_set.R
 	utils.R
 	fit.R
+	preprocess.R
+	analyze.R
 VignetteBuilder: knitr
 License: Artistic-2.0
-URL: https://github.com/hansenlab/mpra
-BugReports: https://github.com/hansenlab/mpra/issues
+URL: https://github.com/kircherlab/BCalm
+BugReports: https://github.com/kircherlab/BCalm/issues
 biocViews: Software, GeneRegulation, Sequencing, FunctionalGenomics
