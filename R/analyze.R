@@ -101,7 +101,7 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, si
 
 	result$logFC <- result$logFC + neg_mean
 	result$AveExpr <- result$AveExpr + neg_mean
-	result$variant_id <- row.names(result)
+	result$name <- row.names(result)
 
 	return(result)
 }
