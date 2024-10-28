@@ -1,4 +1,7 @@
 plot_groups <- function(mpra_fit, percentile=NULL, neg_label=NULL, test_label=NULL) {
+	if (!requireNamespace("ggplot2", quietly = TRUE)) {
+        stop("The 'ggplot2' package is required but not installed. Please install it.")
+    }
 	if (! "label" %in% names(mpra_fit)) {
 		stop("Your mpra fit object should contain a label column.")
 	}
@@ -101,7 +104,7 @@ mpra_treat <- function(mpra_fit, percentile=NULL, neg_label, test_label=NULL, si
 
 	result$logFC <- result$logFC + neg_mean
 	result$AveExpr <- result$AveExpr + neg_mean
-	result$variant_id <- row.names(result)
+	result$name <- row.names(result)
 
 	return(result)
 }
