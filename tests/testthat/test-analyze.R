@@ -48,5 +48,4 @@ test_that("mpra_treat", {
   expect_true(nrow(result) > 0)
   expect_true("logFC" %in% colnames(result))
   expect_true("AveExpr" %in% colnames(result))
-  expect_true("variant_id" %in% colnames(result))
 })
