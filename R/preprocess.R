@@ -1,3 +1,43 @@
+#' Downsample barcodes in a data frame
+#'
+#' This function downsamples the number of barcodes for each group in a data frame
+#' to a specified percentile of the distribution of barcode counts across groups.
+#'
+#' @param df A data frame containing barcode data.
+#' @param id_column_name Character string specifying the name of the column
+#'   used for grouping. Default is "name".
+#' @param percentile Numeric value between 0 and 1 specifying the percentile
+#'   to use for downsampling. Default is 0.95.
+#'
+#' @return A data frame with downsampled barcodes. If the specified id_column_name
+#'   doesn't exist, returns the original data frame with a warning.
+#'
+#' @details
+#' The function first checks if an "allele" column exists in the data frame.
+#' If it does, downsampling is performed within each combination of id and allele.
+#' If not, downsampling is performed within each id group.
+#'
+#' The number of barcodes kept for each group is determined by the specified
+#' percentile of the distribution of barcode counts across all groups.
+#'
+#' @importFrom dplyr %>% group_by summarise ungroup mutate filter pull
+#' @importFrom rlang sym
+#' @importFrom stats quantile
+#'
+#' @export
+#'
+#' @examples
+#' df <- data.frame(
+#' 	   name = rep(c(paste0("A_seq_", 1:3),paste0("B_seq_", 1:8), paste0("C_seq_", 1:4), paste0("D_seq_", 1:5))
+#'     barcode = paste0("barcode_", 1:20),
+#'     allele = rep(c("ref", "alt"), 10),
+#'     count = runif(20)
+#' )
+#'
+#' downsampled_df <- downsample_barcodes(df, id_column_name = "name", percentile = 0.8)
+downsample_barcodes <- function(df, id_column_name = "name", percentile = 0.95) {
+    # Function body here...
+}
 downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 	if (!id_column_name %in% names(df)) {
 		warning(paste("Column", id_column_name, "does not exist in the DataFrame.
@@ -12,7 +52,7 @@ downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 			summarise(n = n(), .groups = 'drop') %>%
 			summarise(max_bc = quantile(n, percentile)) %>%
 			pull(max_bc)
-		
+
 		# Downsample barcodes
 		df <- df %>%
 			group_by(!!sym(id_column_name), allele) %>%
@@ -26,7 +66,7 @@ downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 			summarise(n = n(), .groups = 'drop') %>%
 			summarise(max_bc = quantile(n, percentile)) %>%
 			pull(max_bc)
-		
+
 		# Downsample barcodes
 		df <- df %>%
 			group_by(!!sym(id_column_name)) %>%
@@ -40,16 +80,57 @@ downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 	return(df)
 }
 
+
+df <- data.frame(
+	name = rep(c(rep("A_seq",2), rep("B_seq", 2), rep("C_seq", 6)), each=2),
+    barcode = paste0("barcode_", 1:20),
+    allele = rep(c("ref", "alt"), 10),
+    count = runif(20)
+)
+
+max_bc <- df %>%
+    group_by(!!sym("name"), "allele") %>%
+    summarise(n = n(), .groups = "drop") %>%
+    summarise(max_bc = quantile(n, 0.95)) %>%
+    pull(max_bc)
+
+df_sampled <- df %>%
+    group_by(!!sym("name")) %>%
+    mutate(row_num = sample(row_number())) %>%
+    filter(row_num <= max_bc) %>%
+    ungroup()
+df_sampled
+downsampled_df <- downsample_barcodes(df, id_column_name = "name", percentile = 0.8)
+downsampled_df
+#' Generate DNA count specific dataframe
+#'
+#' @param df Data frame with 'name' column and the barcode and count information for each sequence
+#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
+#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
+#'
+#' @return Data frame with variant_id, allele, Barcode, and count columns
+#'
+#' @export
 create_dna_df <- function(df, id_column_name="variant_id", allele_column_name=NULL) {
 	suppressWarnings({
 		if (is.null(allele_column_name) && !is.null(df$allele)) {
 		allele_column_name <- "allele"
 	}})
-		
+
 	df_dna <- .pivot_df(df, id_column_name, allele_column_name, "DNA")
 	return(df_dna)
 }
 
+
+#' Generate RNA count specific dataframe
+#'
+#' @param df Data frame with 'name' column and the barcode and count information for each sequence
+#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
+#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
+#'
+#' @return Data frame with variant_id, allele, Barcode, and count columns
+#'
+#' @export
 create_rna_df <- function(df, id_column_name="variant_id", allele_column_name=NULL) {
 	suppressWarnings({
 		if (is.null(allele_column_name) && !is.null(df$allele)) {
@@ -60,6 +141,20 @@ create_rna_df <- function(df, id_column_name="variant_id", allele_column_name=NU
 	return(df_rna)
 }
 
+#' Match count information and variant alleles to create a variant data frame
+#'
+#' @param df Data frame with 'name' column and the barcode and count information for each sequence
+#' @param map_df Data frame with 'ID', 'REF', and 'ALT' columns
+#'
+#' @return Data frame with variant_id, allele, Barcode, and count columns
+#'
+#' @importFrom dplyr %>% select matches
+#' @examples
+#' df <- data.frame(name = c("ref1", "ref2", "alt1", "alt2"), Barcode = 1:4, dna_count= 2:5, rna_count = 10:13)
+#' map_df <- data.frame(ID = c("rs1", "rs2"), REF = c("ref1", "ref2"), ALT = c("alt1", "alt2"))
+#' result <- create_var_df(df, map_df)
+#' head(result)
+#' @export
 create_var_df <- function(df, map_df) {
 	if (!all(c("ID", "REF", "ALT") %in% colnames(map_df))) {
 		stop("map_df must contain columns 'ID', 'REF', and 'ALT'")
@@ -69,7 +164,7 @@ create_var_df <- function(df, map_df) {
 		stop("df must contain column 'name'")
 	}
 	map_df <- map_df %>% select(ID, REF, ALT)
-	
+
 	# Merge on REF
 	df_ref <- merge(df, map_df, by.x = "name", by.y = "REF", all.x = FALSE)
 	df_ref$allele <- "ref"
@@ -89,6 +184,33 @@ create_var_df <- function(df, map_df) {
 	return(var_df)
 }
 
+#' Pivot a data frame
+#'
+#' This function pivots a data frame, creating a wider format based on specified columns.
+#'
+#' @param df A data frame to be pivoted
+#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
+#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
+#' @param type Character string specifying the type of values to pivot
+#'
+#' @return A pivoted data frame with rows named by the ID column and columns prefixed with "bc"
+#'
+#' @importFrom dplyr %>% group_by mutate ungroup rename_with arrange
+#' @importFrom tidyr pivot_wider unite
+#' @importFrom rlang sym
+#'
+#' @examples
+#' df <- data.frame(
+#'     variant_id = c("rs1", "rs1", "rs2", "rs2"),
+#'     allele = c("ref", "alt", "ref", "alt"),
+#'     count = 1:4
+#' )
+#' pivoted_df <- .pivot_df(df,
+#'     id_column_name = "variant_id",
+#'     allele_column_name = "allele", type = "count"
+#' )
+#'
+#' @keywords internal
 .pivot_df <- function(df, id_column_name="variant_id", allele_column_name=NULL, type) {
 	if (is.null(allele_column_name)) {
 		df <- df %>% group_by(!!sym(id_column_name)) %>%
