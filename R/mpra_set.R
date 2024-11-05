@@ -17,3 +17,11 @@ getLabel <- function(object) {
 	.is_mpra_or_stop(object)
 	rowData(object)$label
 }
+
+setLabel <- function(object, label) {
+	.is_mpra_or_stop(object)
+	eid <- getEid(object)
+	label <- label[eid]
+	rowData(object)$label <- label
+	object
+}
