@@ -1,10 +1,12 @@
-fit_elements <- function(object, normalize=TRUE, block = NULL, ...) {
+fit_elements <- function(object, normalize=TRUE, block = NULL, endomorphic=FALSE, ...) {
 	design <- data.frame(rep(1, ncol(object)))
 	mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
 						normalize = normalize, model_type = "indep_groups", 
-						block = block, ...)
-	mpralm_fit$logratio <- mpralm_fit$coefficients
-	mpralm_fit$label <- getLabel(object)						
+						block = block, endomorphic = endomorphic,...)	
+	if (! endomorphic) {
+		mpralm_fit$label <- getLabel(object)
+		mpralm_fit$logFC <- mpralm_fit$coefficients
+	}
 	return(mpralm_fit)
 }
 
