@@ -94,7 +94,7 @@ create_var_df <- function(df, map_df) {
 	return(var_df)
 }
 
-.pivot_df <- function(df, id_column_name="variant_id", allele_column_name=NULL, type) {
+.pivot_df <- function(df, id_column_name="variant_id", allele_column_name, type) {
 	if (is.null(allele_column_name)) {
 		df <- df %>% group_by(!!sym(id_column_name)) %>%
 			mutate(new_idx = row_number()) %>%
@@ -102,7 +102,7 @@ create_var_df <- function(df, map_df) {
 	} else {
 		df <- df %>% group_by(!!sym(id_column_name), !!sym(allele_column_name)) %>%
 			mutate(bc = row_number()) %>%
-			unite("new_idx", c("bc", "allele"), sep = "_", remove = FALSE) %>%
+			unite("new_idx", c("bc", !!sym(allele_column_name)), sep = "_", remove = FALSE) %>%
 			ungroup()
 	}
 	df_pivot <- df %>%
