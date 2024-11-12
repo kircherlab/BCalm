@@ -4,7 +4,7 @@
 #' to a specified percentile of the distribution of barcode counts across groups.
 #'
 #' @param df A data frame containing barcode data.
-#' @param id_column_name Character string specifying the name of the column
+#' @param id_column_name String indicating the name of the column
 #'   used for grouping. Default is "name".
 #' @param percentile Numeric value between 0 and 1 specifying the percentile
 #'   to use for downsampling. Default is 0.95.
@@ -24,20 +24,16 @@
 #' @importFrom rlang sym
 #' @importFrom stats quantile
 #'
-#' @export
-#'
 #' @examples
 #' df <- data.frame(
-#' 	   name = rep(c(paste0("A_seq_", 1:3),paste0("B_seq_", 1:8), paste0("C_seq_", 1:4), paste0("D_seq_", 1:5))
+#'     name = rep(c(rep("A_seq", 2), rep("B_seq", 2), rep("C_seq", 6)), each = 2),
 #'     barcode = paste0("barcode_", 1:20),
 #'     allele = rep(c("ref", "alt"), 10),
 #'     count = runif(20)
 #' )
 #'
 #' downsampled_df <- downsample_barcodes(df, id_column_name = "name", percentile = 0.8)
-downsample_barcodes <- function(df, id_column_name = "name", percentile = 0.95) {
-    # Function body here...
-}
+#' @export
 downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 	if (!id_column_name %in% names(df)) {
 		warning(paste("Column", id_column_name, "does not exist in the DataFrame.
@@ -81,32 +77,11 @@ downsample_barcodes <- function(df, id_column_name="name", percentile=0.95) {
 }
 
 
-df <- data.frame(
-	name = rep(c(rep("A_seq",2), rep("B_seq", 2), rep("C_seq", 6)), each=2),
-    barcode = paste0("barcode_", 1:20),
-    allele = rep(c("ref", "alt"), 10),
-    count = runif(20)
-)
-
-max_bc <- df %>%
-    group_by(!!sym("name"), "allele") %>%
-    summarise(n = n(), .groups = "drop") %>%
-    summarise(max_bc = quantile(n, 0.95)) %>%
-    pull(max_bc)
-
-df_sampled <- df %>%
-    group_by(!!sym("name")) %>%
-    mutate(row_num = sample(row_number())) %>%
-    filter(row_num <= max_bc) %>%
-    ungroup()
-df_sampled
-downsampled_df <- downsample_barcodes(df, id_column_name = "name", percentile = 0.8)
-downsampled_df
 #' Generate DNA count specific dataframe
 #'
 #' @param df Data frame with 'name' column and the barcode and count information for each sequence
-#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
-#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
+#' @param id_column_name String indicating the name of the ID column. Default is "variant_id"
+#' @param allele_column_name String indicating the name of the allele column. Default is NULL
 #'
 #' @return Data frame with variant_id, allele, Barcode, and count columns
 #'
@@ -125,8 +100,8 @@ create_dna_df <- function(df, id_column_name="variant_id", allele_column_name=NU
 #' Generate RNA count specific dataframe
 #'
 #' @param df Data frame with 'name' column and the barcode and count information for each sequence
-#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
-#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
+#' @param id_column_name String indicating the name of the ID column. Default is "variant_id"
+#' @param allele_column_name String indicating the name of the allele column. Default is NULL
 #'
 #' @return Data frame with variant_id, allele, Barcode, and count columns
 #'
@@ -140,6 +115,7 @@ create_rna_df <- function(df, id_column_name="variant_id", allele_column_name=NU
 	df_rna <- .pivot_df(df, id_column_name, allele_column_name, "RNA")
 	return(df_rna)
 }
+
 
 #' Match count information and variant alleles to create a variant data frame
 #'
@@ -189,9 +165,9 @@ create_var_df <- function(df, map_df) {
 #' This function pivots a data frame, creating a wider format based on specified columns.
 #'
 #' @param df A data frame to be pivoted
-#' @param id_column_name Character string specifying the name of the ID column. Default is "variant_id"
-#' @param allele_column_name Character string specifying the name of the allele column. Default is NULL
-#' @param type Character string specifying the type of values to pivot
+#' @param id_column_name String indicating the name of the ID column. Default is "variant_id"
+#' @param allele_column_name String indicating the name of the allele column. Default is NULL
+#' @param type String indicating the type of values to pivot
 #'
 #' @return A pivoted data frame with rows named by the ID column and columns prefixed with "bc"
 #'
