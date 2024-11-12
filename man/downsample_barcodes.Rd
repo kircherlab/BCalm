@@ -9,7 +9,7 @@ downsample_barcodes(df, id_column_name = "name", percentile = 0.95)
 \arguments{
 \item{df}{A data frame containing barcode data.}
 
-\item{id_column_name}{Character string specifying the name of the column
+\item{id_column_name}{String indicating the name of the column
 used for grouping. Default is "name".}
 
 \item{percentile}{Numeric value between 0 and 1 specifying the percentile

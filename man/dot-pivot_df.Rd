@@ -9,11 +9,11 @@
 \arguments{
 \item{df}{A data frame to be pivoted}
 
-\item{id_column_name}{Character string specifying the name of the ID column. Default is "variant_id"}
+\item{id_column_name}{String indicating the name of the ID column. Default is "variant_id"}
 
-\item{allele_column_name}{Character string specifying the name of the allele column. Default is NULL}
+\item{allele_column_name}{String indicating the name of the allele column. Default is NULL}
 
-\item{type}{Character string specifying the type of values to pivot}
+\item{type}{String indicating the type of values to pivot}
 }
 \value{
 A pivoted data frame with rows named by the ID column and columns prefixed with "bc"

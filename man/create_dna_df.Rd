@@ -9,9 +9,9 @@ create_dna_df(df, id_column_name = "variant_id", allele_column_name = NULL)
 \arguments{
 \item{df}{Data frame with 'name' column and the barcode and count information for each sequence}
 
-\item{id_column_name}{Character string specifying the name of the ID column. Default is "variant_id"}
+\item{id_column_name}{String indicating the name of the ID column. Default is "variant_id"}
 
-\item{allele_column_name}{Character string specifying the name of the allele column. Default is NULL}
+\item{allele_column_name}{String indicating the name of the allele column. Default is NULL}
 }
 \value{
 Data frame with variant_id, allele, Barcode, and count columns
