@@ -111,7 +111,7 @@ test_that("downsample_barcodes", {
 test_that("create_var_df", {
 
   expect_equal(create_var_df(df_var_1,map_df_var_1), res_var_1)
-  expect_equal(create_var_df(df_var_1,map_df_var_2), res_var_2)
+  expect_error(create_var_df(df_var_1,map_df_var_2))
 
 })
 
@@ -120,7 +120,7 @@ test_that("create_dna_df", {
   expect_equal(create_dna_df(df_dna_1), res_dna_1)
   expect_equal(create_dna_df(df_dna_2, allele_column_name = "custom_allele"), res_dna_2)
   expect_error(create_dna_df(df_dna_3))
-  expect_equal(create_dna_df(df_dna_4), data.frame())
+  expect_equal(create_dna_df(df_dna_4), data.frame(row.names = character()))
   expect_error(create_dna_df(df_dna_5, id_column_name = "variant_id"))
 
 })

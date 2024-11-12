@@ -22,6 +22,9 @@ block_vector <- rep(1:nr_reps, each = bcs)
 
 mpralm_fit <- fit_elements(object = mpra, normalize=TRUE, block = block_vector)
 
+# forcing the output to be MPRASEt as well
+mpralm_fit_endo <- fit_elements(object = mpra, normalize = TRUE, block = block_vector, endomorphic = TRUE)
+
 # with different percentiles
 result_95 <- mpra_treat(mpralm_fit, percentile = 0.95, neg_label="control_name", test_label="test_name", side="both")
 result_50 <- mpra_treat(mpralm_fit, percentile = 0.50, neg_label="control_name", test_label="test_name", side="both")
@@ -32,7 +35,7 @@ result_left <- mpra_treat(mpralm_fit, percentile = 0.95, neg_label="control_name
 
 #simple result to check output structure
 result <- mpra_treat(mpralm_fit, percentile = 0.95, neg_label="control_name", test_label="test_name", side="both")
-
+result_endo <- mpra_treat(mpralm_fit_endo, percentile = 0.95, neg_label = "control_name", test_label = "test_name", side = "both")
 
 ## testthat calls
 test_that("mpra_treat", {
@@ -48,4 +51,7 @@ test_that("mpra_treat", {
   expect_true(nrow(result) > 0)
   expect_true("logFC" %in% colnames(result))
   expect_true("AveExpr" %in% colnames(result))
+
+  expect_equal(result, result_endo)
+  expect_error(mpra_treat(mpra))
 })
