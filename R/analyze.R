@@ -91,6 +91,7 @@ plot_groups <- function(mpra_fit, percentile=NULL, neg_label=NULL, test_label=NU
 #' This function shifts the \code{logratio} values in \code{mpra_fit} by subtracting the mean of the negative control group (specified by \code{neg_label}) to standardize comparisons.
 #' It then applies a threshold using the specified \code{percentile} on the logratios for the negative group, treating this as the cut-off for identifying shifts in the test group.
 #' Side-specific testing is applied based on the \code{side} parameter, with options to filter for significant logratios in the positive (right), negative (left), or both directions.
+#' This means if you run a two-sided test the number of results is only missing the rows of the "neg_label" sequences.
 #'
 #' @return A data frame containing rows that meet the threshold criterion, with the following columns:
 #' \itemize{
