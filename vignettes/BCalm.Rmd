@@ -9,6 +9,8 @@ vignette: >
 
 
 ```{r setup, echo=TRUE, message=FALSE}
+install.packages("remotes")
+remotes::install_github("kircherlab/bcalm@fix/installation")
 library(BCalm)
 library(dplyr)
 library(ggplot2)
@@ -36,8 +38,8 @@ head(MapExample)
 var_df <- create_var_df(BcSetExample, MapExample)
 ```
 
-Optionally, downsampling can be performed to `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. 
-Therefore it takes dataset rows corresponding to barcodes and and columns contain barcode information.The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`. A rate of 0.5 would keep half of the original barcode counts. The default value for `percentile` is set to 0.95. 
+Optionally, downsampling can be performed to `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset.
+Therefore it takes dataset rows corresponding to barcodes and and columns contain barcode information.The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`. A rate of 0.5 would keep half of the original barcode counts. The default value for `percentile` is set to 0.95.
 The `id_column_name` argument allows us to specify the name of the column in the input data frame that contains the unique identifiers for each variant. This is particularly useful when the default column name does not match the your data format. In this case we set the id_column_name to `variant_id`.
 
 ```{r Variant Downsampling}
@@ -106,7 +108,7 @@ ggplot(top_var, aes(x = logFC, y = -log10(P.Value))) +
 
 ## Element Analysis
 
-BCalm provides the function `fit_elements`. It takes the `MPRASet` object as input and applies statistical modeling. Again the `block_vector` gives reference which barcode belongs to which replicate. 
+BCalm provides the function `fit_elements`. It takes the `MPRASet` object as input and applies statistical modeling. Again the `block_vector` gives reference which barcode belongs to which replicate.
 Also we set `normalize = TRUE` to perform total count normalization on the RNA and DNA libraries.
 
 ```{r Fit elements, fig.width=8, fig.height=4}
@@ -117,12 +119,12 @@ mpralm_fit_elem <- fit_elements(object = BcLabelMPRASetExample, normalize=TRUE, 
 
 Internally, `fit_elements` constructs the design matrix and applies the mpralm function with the parameters `aggregate = "none"` and `model_type = "indep_groups"`. The `aggregate = "none"` option ensures that the analysis is performed on individual barcode counts.
 On top to the mpralm function, `fit_elements` automatically assigns the model coefficients to a 'logratio' column, making it easier to interpret the estimated effects. Additionally, `fit_elements` includes a 'label' column to the fitted model.
-            
+
 ## Visualisation and results
 In this section, we will examine the visualization of our analysis results using the `mpra_treat` and `plot_groups` functions. By employing these functions, we can create representations of differences between groups in our MPRA data that highlight important trends and patterns.
 To visualize our results, we utilize the `plot_groups` function, which allows us to compare logratios for each group. We use the results we got from `fit_elements` above, as it contains the statistical data which is needed for visualization. As negative controls we use `"liverMPRA_(-)"` and as test `"ProximalPromoterDesign"`.
 
-```{r Visualization, fig=TRUE, fig.width=8, fig.height=4, warning=FALSE} 
+```{r Visualization, fig=TRUE, fig.width=8, fig.height=4, warning=FALSE}
 plot_groups(mpralm_fit_elem, 0.95, neg_label="liverMPRA_(-)", test_label="ProximalPromoterDesign")
 ```
 
