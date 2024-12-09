@@ -18,7 +18,6 @@ Suggests:
    rmarkdown,
    RUnit,
    testthat (>= 3.0.0),
-   ggplot2
 Imports:
    S4Vectors,
    scales,
@@ -31,7 +30,8 @@ Imports:
    GenomicRanges,
    Biobase,
    S4Arrays,
-   DelayedArray
+   DelayedArray,
+   ggplot2
 Collate:
    mpra_set.R
    utils.R
