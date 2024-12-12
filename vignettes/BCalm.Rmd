@@ -2,22 +2,16 @@
 title: "BCalm: A User's Guide"
 author: "Pia Keukeleire"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-package: "0.1.0"
+package: "`r Githubpkg('kircherlab/bcalm')` (v0.1.0)"
 bibliography: bcalm.bib
 abstract: >
-  A presentation of how the `BCalm` package should be used for massively parallel reporter assays (MPRA) data analysis. (bcalm v0.1.0)
+  A presentation of how the `BCalm` package should be used for massively parallel reporter assays (MPRA) data analysis.
 vignette: >
-  %\VignetteIndexEntry{BCalm}
+  %\VignetteIndexEntry{BCalm: A User's Guide}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
-  html_document:
-    toc: true
-    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
-    number_sections: true  ## if you want number sections at each table header
-editor_options:
-  markdown:
-    wrap: 72
+  BiocStyle::html_document
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -32,14 +26,15 @@ remotes::install_github("kircherlab/bcalm@fix/installation")
 library(BCalm)
 library(dplyr)
 library(ggplot2)
+library(kableExtra)
 ```
 
 # Introduction
 
-The BCalm package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. Especially without prior outlier removal BCalm is more robust. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
+The `r Githubpkg('kircherlab/bcalm')` package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. Especially without prior outlier removal BCalm is more robust. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
 
 ## How to appreciate the work
-The work presented here is currently within a peer review process and is based on the `mpralm` package [@mpralm] and hence on the voom framework [@voom]. Which can be appreciated by citing the respective manuscripts.
+The work presented here is currently within a peer review process and is based on the `mpra` package [@mpralm] and hence on the voom framework [@voom]. Which can be appreciated by citing the respective manuscripts.
 
 ## Additional information for the installation
 The package is currently available as a github package which default branch is the BC_modification branch and installable using remotes [@remotes]. The `remotes` package needs to be installed first and the most appropriate cran mirror can be changed using the repos parameter, a list of mirros can be found [here](https://cran.r-project.org/mirrors.html).
@@ -51,7 +46,7 @@ The first dataframe contains lentiMPRA data DNA and RNA counts of three replicat
 ```{r First dataset}
 data("BcSetExample")
 nr_reps = 3
-head(BcSetExample)
+kable(head(BcSetExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 ```
 
 ## Variant testing
@@ -59,28 +54,28 @@ head(BcSetExample)
 To prepare data for variant testing, we use the `create_var_df` function from BCalm. This function requires a mapping dataframe with information linking each reference allele to its corresponding alternative allele. Here, we use `MapExample`, a dataframe containing three essential columns: `ID`, `REF`, and `ALT`. This setup provides the necessary reference and alternative allele data to enable accurate variant analysis.
 ```{r Variant Map}
 data("MapExample")
+kable(head(MapExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 
 var_df <- create_var_df(BcSetExample, MapExample)
-head(var_df)
-head(MapExample)
+kable(head(var_df), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+
 ```
 
-Optionally, downsampling can be performed to `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset.
-Therefore it takes dataset rows corresponding to barcodes and and columns contain barcode information.The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`. A rate of 0.5 would keep half of the original barcode counts. The default value for `percentile` is set to 0.95.
-The `id_column_name` argument allows us to specify the name of the column in the input data frame that contains the unique identifiers for each variant. This is particularly useful when the default column name does not match the your data format. In this case we set the id_column_name to `variant_id`.
+Optionally, downsampling can be performed to `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. So the number of barcodes of oligos with many barcodes are reduced which simplifies the data handling and reduces the sparseness of the data table (i.e. increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`. A rate of 0.5 would keep half of the original barcode counts. The default value for `percentile` is set to 0.95.
+The `id_column_name` argument specifies the column in the input data frame that contains the unique identifiers for each variant (here `variant_id`).
 
 ```{r Variant Downsampling}
 var_df <- downsample_barcodes(var_df, id_column_name="variant_id")
 ```
 
-After downsampling the barcode counts in our dataset, we can prepare the data for analysis using the `create_dna_df` and `create_rna_df` functions. These functions help in formatting the data appropriately for further analysis in the MPRA context.
+After downsampling the barcode counts in our dataset, we can prepare the data for analysis using the `create_dna_df` and `create_rna_df` functions. These functions help in formatting the data appropriately for further analysis in the MPRA context. Only six rows are shown here (original size of the dataframe 996 × 474).
 ```{r Creating dna dataframe from var_df}
 dna_var <- create_dna_df(var_df)
-head(dna_var)[, 1:5]
+kable(head(dna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 ```
 ```{r Creating rna dataframe from var_df}
 rna_var <- create_rna_df(var_df)
-head(rna_var)[, 1:5]
+kable(head(rna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 ```
 Now we create the MPRA set we need in the analysis.
 
@@ -100,7 +95,7 @@ We can also perform downsampling on this dataset using the `downsample_barcodes`
 elem_df <- downsample_barcodes(BcSetExample)
 ```
 
-As before, we use `create_dna_df` and `create_rna_df` to format the data correctly for MPRASets. However, this time we specify `id_column_name = "name"` since the default, `id_column_name = "variant_id"`, does not match our data format.
+As before, we use `create_dna_df` and `create_rna_df` to format the data correctly for the `MPRASet` function. However, this time we specify `id_column_name = "name"` since the default, `id_column_name = "variant_id"`, does not match our data format.
 ```{r Creating dataframes}
 dna_elem <- create_dna_df(elem_df, id_column_name="name")
 rna_elem <- create_rna_df(elem_df, id_column_name="name")
@@ -112,10 +107,10 @@ We still need to add the labels to the MPRASet, which is allowed by the BCalm MP
 BcLabelMPRASetExample <- MPRASet(DNA = dna_elem, RNA = rna_elem, eid = row.names(dna_elem), barcode = NULL, label=LabelExample)
 ```
 
-With the data now prepared and preprocessed, we now have a the foundation to conduct our analysis effectively.
+With the data now prepared and preprocessed, we now have the foundation to conduct our analysis effectively.
 
 # Analysis
-In this section we get to see the usage of the `mpralm` and the `fit_elements` function. We take the `MPRASets` created in the preprocessing chapter. BCalm allows us to analyze individual barcode counts as separate samples, capturing additional data variation and potentially increasing statistical power. It provides a nuanced view of regulatory element activity.
+In this section we get to see the usage of the `mpralm` and the `fit_elements` functions. We take the `MPRASet` created in the preprocessing chapter. BCalm allows us to analyze individual barcode counts as separate samples, capturing additional data variation and potentially increasing statistical power. It provides a nuanced view of regulatory element activity.
 
 ## Variant Analysis
 We will start with variant testing. In order to achieve this, we employ the `mpralm` function. Which column belongs to which replicate is described in a blocking vector, also used to normalize the counts per replicate.
@@ -128,7 +123,7 @@ block_vector <- rep(1:nr_reps, each=bcs)
 mpralm_fit_var <- mpralm(object = BcVariantMPRASetExample, design = design, aggregate = "none", normalize = TRUE, model_type = "corr_groups", plot = FALSE, block = block_vector)
 
 top_var <- topTable(mpralm_fit_var, coef = 2, number = Inf)
-head(top_var)
+kable(head(rna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 ```
 
 ```{r Volcano Plot}
@@ -138,7 +133,7 @@ ggplot(top_var, aes(x = logFC, y = -log10(P.Value))) +
 
 ## Element Analysis
 
-BCalm provides the function `fit_elements`. It takes the `MPRASet` object as input and applies statistical modeling. Again the `block_vector` gives reference which barcode belongs to which replicate.
+BCalm provides the function `fit_elements`. It takes the `MPRASet` object as input and applies the statistical modeling. Again the `block_vector` gives reference which barcode belongs to which replicate.
 Also we set `normalize = TRUE` to perform total count normalization on the RNA and DNA libraries.
 
 ```{r Fit elements, fig.width=8, fig.height=4}
@@ -163,3 +158,11 @@ The `mpra_treat()` function is a wrapper around the `treat()` and `topTreat()` f
 result <- mpra_treat(mpralm_fit_elem, 0.975, neg_label="liverMPRA_(-)")
 head(result)
 ```
+
+# Session Info
+
+```{r sessionInfo, results='asis', echo=FALSE}
+sessionInfo()
+```
+
+# References

@@ -31,7 +31,8 @@ Imports:
    Biobase,
    S4Arrays,
    DelayedArray,
-   ggplot2
+   ggplot2,
+   kableExtra
 Collate:
    mpra_set.R
    utils.R
