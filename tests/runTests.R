@@ -1,2 +1,6 @@
-require("mpra") || stop("unable to load mpra")
-BiocGenerics:::testPackage("mpra")
+library(testthat)
+library(usethis)
+library(devtools)
+library(here)
+
+use_testthat()

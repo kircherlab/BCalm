@@ -5,3 +5,6 @@ auto/
 *~
 .Rhistory
 .DS_Store
+inst/doc
+*.pdf
+*.html
