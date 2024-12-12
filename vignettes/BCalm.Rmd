@@ -1,16 +1,34 @@
 ---
-title: "BCalm"
-output: rmarkdown::html_vignette
+title: "BCalm: A User's Guide"
+author: "Pia Keukeleire"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+package: "0.1.0"
+bibliography: bcalm.bib
+abstract: >
+  A presentation of how the `BCalm` package should be used for massively parallel reporter assays (MPRA) data analysis. (bcalm v0.1.0)
 vignette: >
   %\VignetteIndexEntry{BCalm}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+output:
+  html_document:
+    toc: true
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    number_sections: true  ## if you want number sections at each table header
+editor_options:
+  markdown:
+    wrap: 72
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
 
-
-```{r setup, echo=TRUE, message=FALSE}
-install.packages("remotes")
+```{r remotes installation, echo=TRUE}
+install.packages("remotes", repos='http://cran.us.r-project.org', dependencies=TRUE)
 remotes::install_github("kircherlab/bcalm@fix/installation")
+```
+
+```{r loading packages, echo=TRUE}
 library(BCalm)
 library(dplyr)
 library(ggplot2)
@@ -18,8 +36,14 @@ library(ggplot2)
 
 # Introduction
 
-The BCalm package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualisation and interpretation of results.
+The BCalm package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. Especially without prior outlier removal BCalm is more robust. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
 
+## How to appreciate the work
+The work presented here is currently within a peer review process and is based on the `mpralm` package [@mpralm] and hence on the voom framework [@voom]. Which can be appreciated by citing the respective manuscripts.
+
+## Additional information for the installation
+The package is currently available as a github package which default branch is the BC_modification branch and installable using remotes [@remotes]. The `remotes` package needs to be installed first and the most appropriate cran mirror can be changed using the repos parameter, a list of mirros can be found [here](https://cran.r-project.org/mirrors.html).
+If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm github repository](https://github.com/kircherlab/BCalm).
 
 # Preprossing data
 
@@ -27,15 +51,18 @@ The first dataframe contains lentiMPRA data DNA and RNA counts of three replicat
 ```{r First dataset}
 data("BcSetExample")
 nr_reps = 3
+head(BcSetExample)
 ```
+
 ## Variant testing
 
 To prepare data for variant testing, we use the `create_var_df` function from BCalm. This function requires a mapping dataframe with information linking each reference allele to its corresponding alternative allele. Here, we use `MapExample`, a dataframe containing three essential columns: `ID`, `REF`, and `ALT`. This setup provides the necessary reference and alternative allele data to enable accurate variant analysis.
 ```{r Variant Map}
-data(MapExample)
-head(MapExample)
+data("MapExample")
 
 var_df <- create_var_df(BcSetExample, MapExample)
+head(var_df)
+head(MapExample)
 ```
 
 Optionally, downsampling can be performed to `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset.
@@ -47,9 +74,13 @@ var_df <- downsample_barcodes(var_df, id_column_name="variant_id")
 ```
 
 After downsampling the barcode counts in our dataset, we can prepare the data for analysis using the `create_dna_df` and `create_rna_df` functions. These functions help in formatting the data appropriately for further analysis in the MPRA context.
-```{r Creating dataframes var_df}
+```{r Creating dna dataframe from var_df}
 dna_var <- create_dna_df(var_df)
+head(dna_var)[, 1:5]
+```
+```{r Creating rna dataframe from var_df}
 rna_var <- create_rna_df(var_df)
+head(rna_var)[, 1:5]
 ```
 Now we create the MPRA set we need in the analysis.
 
@@ -100,7 +131,6 @@ top_var <- topTable(mpralm_fit_var, coef = 2, number = Inf)
 head(top_var)
 ```
 
-
 ```{r Volcano Plot}
 ggplot(top_var, aes(x = logFC, y = -log10(P.Value))) +
   geom_point(alpha = 0.6)
@@ -125,11 +155,11 @@ In this section, we will examine the visualization of our analysis results using
 To visualize our results, we utilize the `plot_groups` function, which allows us to compare logratios for each group. We use the results we got from `fit_elements` above, as it contains the statistical data which is needed for visualization. As negative controls we use `"liverMPRA_(-)"` and as test `"ProximalPromoterDesign"`.
 
 ```{r Visualization, fig=TRUE, fig.width=8, fig.height=4, warning=FALSE}
-plot_groups(mpralm_fit_elem, 0.95, neg_label="liverMPRA_(-)", test_label="ProximalPromoterDesign")
+plot_groups(mpralm_fit_elem, 0.975, neg_label="liverMPRA_(-)", test_label="ProximalPromoterDesign")
 ```
 
 The `mpra_treat()` function is a wrapper around the `treat()` and `topTreat()` functions from the LIMMA package. This function performs a t-test with a specified threshold, making it especially useful for identifying elements with significant differential activity in MPRA data.
 ```{r MPRA treat}
-result <- mpra_treat(mpralm_fit_elem, 0.95, neg_label="liverMPRA_(-)", test_label="ProximalPromoterDesign", side="both")
+result <- mpra_treat(mpralm_fit_elem, 0.975, neg_label="liverMPRA_(-)")
 head(result)
 ```

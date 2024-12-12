@@ -44,3 +44,4 @@ URL: https://github.com/kircherlab/BCalm
 BugReports: https://github.com/kircherlab/BCalm/issues
 biocViews: Software, GeneRegulation, Sequencing, FunctionalGenomics
 Config/testthat/edition: 3
+LazyData: true
