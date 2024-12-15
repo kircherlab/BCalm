@@ -6,13 +6,15 @@ Authors@R: c(
       person("Pia", "Keukeleire", role = c("cre", "aut"), email = "pia.keukeleire@uksh.de"),
       person("Martin", "Kircher", role = "aut"))
 Depends:
-    R (>= 3.5)
+    R (>= 3.5), 
+	R (<= 4.4.0)
 Imports:
     methods,
     BiocGenerics,
     SummarizedExperiment,
     limma,
     mpra,
+	curl,
     S4Vectors,
     scales,
     stats,
@@ -38,11 +40,6 @@ Collate:
    fit.R
    preprocess.R
    analyze.R
-Remotes:
-    bioc::SummarizedExperiment,
-    bioc::mpra,
-    bioc::GenomicRanges,
-    bioc::DelayedArray,
 VignetteBuilder: knitr
 License: Artistic-2.0
 URL: https://github.com/kircherlab/BCalm

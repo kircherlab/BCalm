@@ -19,14 +19,14 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```{r remotes installation, echo=TRUE}
 install.packages("remotes", repos='http://cran.us.r-project.org', dependencies=TRUE)
-remotes::install_github("kircherlab/bcalm@fix/installation")
+remotes::install_github("kircherlab/bcalm")
 ```
 
 ```{r loading packages, echo=TRUE}
 library(BCalm)
 library(dplyr)
 library(ggplot2)
-library(kableExtra) # for visual appealing tables
+library(kableExtra) # for visually appealing tables
 ```
 
 # Introduction
@@ -37,8 +37,10 @@ The `r Githubpkg('kircherlab/bcalm')` package provides a framework for analyzing
 The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom]. 
 
 ## Additional information for the installation
-The package is currently available as a github package which is installable using remotes [@remotes]. The `remotes` package needs to be installed first and the most appropriate cran mirror can be changed using the repos parameter, a list of mirrors can be found [here](https://cran.r-project.org/mirrors.html).
-If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm github repository](https://github.com/kircherlab/BCalm).
+The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools]. 
+The package requires R >= 3.5, <= 4.4.0.
+If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
+To display the vignette correctly, the `kableExtra` and `ggplot2` packages are required.
 
 # Preprocessing data
 
