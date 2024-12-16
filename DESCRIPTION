@@ -14,12 +14,7 @@ Depends:
     limma,
     curl,
 Imports:
-    methods,
-    BiocGenerics,
-    SummarizedExperiment,
-    limma,
     mpra,
-    curl,
     S4Vectors,
     scales,
     stats,
