@@ -6,15 +6,20 @@ Authors@R: c(
       person("Pia", "Keukeleire", role = c("cre", "aut"), email = "pia.keukeleire@uksh.de"),
       person("Martin", "Kircher", role = "aut"))
 Depends:
-    R (>= 3.5), 
-	R (<= 4.4.0)
+    R (>= 3.5),
+    R (<= 4.4.0),
+    methods,
+    BiocGenerics,
+    SummarizedExperiment,
+    limma,
+    curl,
 Imports:
     methods,
     BiocGenerics,
     SummarizedExperiment,
     limma,
     mpra,
-	curl,
+    curl,
     S4Vectors,
     scales,
     stats,
