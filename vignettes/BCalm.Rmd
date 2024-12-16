@@ -14,12 +14,7 @@ output:
   BiocStyle::html_document
 ---
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE)
-```
-
-```{r remotes installation, echo=TRUE}
-install.packages("remotes", repos='http://cran.us.r-project.org', dependencies=TRUE)
-remotes::install_github("kircherlab/bcalm")
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, crop=NULL)
 ```
 
 ```{r loading packages, echo=TRUE}
@@ -34,17 +29,17 @@ library(kableExtra) # for visually appealing tables
 The `r Githubpkg('kircherlab/bcalm')` package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. BCalm is more robust to outlier MPRA counts. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
 
 ## Citing BCalm
-The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom]. 
+The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom].
 
 ## Additional information for the installation
-The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools]. 
+The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools].
 The package requires R >= 3.5, <= 4.4.0.
 If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
 To display the vignette correctly, the `kableExtra` and `ggplot2` packages are required.
 
 # Preprocessing data
 
-The first dataframe contains as small subset of a lentiMPRA dataset performed within HepG2 cells with three technical replicates (IGVF accession identifier: IGVFSM9009DVDG). Sequences tested in this experiment aim to capture variant effects across tens of thousands of candidate cis-regulatory element (cCRE) sequences of 200 base pair (bp) length. 
+The first dataframe contains as small subset of a lentiMPRA dataset performed within HepG2 cells with three technical replicates (IGVF accession identifier: IGVFSM9009DVDG). Sequences tested in this experiment aim to capture variant effects across tens of thousands of candidate cis-regulatory element (cCRE) sequences of 200 base pair (bp) length.
 The input files used here were obtained from  `r Githubpkg('kircherlab/MPRAsnakeflow')`, a Snakemake workflow produced as part of the Impact of Genomic Variation on Function (IGVF) Consortium. MPRAsnakeflow is a comprehensive pipeline which performs both the assignment of barcodes to the designed oligos and the preparation of count tables of DNA and RNA counts based on the observed number of barcodes within the targeted DNA and RNA sequencing (modified from [@Gordon2020]).
 
 ```{r First dataset}
@@ -55,7 +50,7 @@ kable(head(BcSetExample), "html") %>% kable_styling("striped") %>% scroll_box(wi
 ```
 
 In general, any sequence can be tested using an MPRA. Possible analyses can be differentiated by whether they compare the activity of different conditions of the same region, such as variant testing, or whether they compare the activities of different regions.
-For element testing, the tested sequences in this vignette are compared to a group of negative control sequences (known to have low activity in HepG2) and the sequences to be tested. 
+For element testing, the tested sequences in this vignette are compared to a group of negative control sequences (known to have low activity in HepG2) and the sequences to be tested.
 We show the usage of BCalm on a variant dataset as well as an element dataset in this vignette. First, we show how to correctly preprocess the data.
 
 ## Variant testing
@@ -67,7 +62,7 @@ data("MapExample")
 # show the data
 kable(head(MapExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 
-# create the variant dataframe by adding the variant ID to the DNA and RNA counts 
+# create the variant dataframe by adding the variant ID to the DNA and RNA counts
 var_df <- create_var_df(BcSetExample, MapExample)
 # show the data
 kable(head(var_df), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
@@ -81,7 +76,7 @@ The `id_column_name` argument specifies the column in the input data frame that 
 var_df <- downsample_barcodes(var_df, id_column_name="variant_id")
 ```
 
-After downsampling the barcode counts in our dataset, we can prepare the data for analysis using the `create_dna_df` and `create_rna_df` functions.  
+After downsampling the barcode counts in our dataset, we can prepare the data for analysis using the `create_dna_df` and `create_rna_df` functions.
 Only six rows are shown here (original size of the dataframe 996 × 474).
 ```{r Creating dna dataframe from var_df}
 dna_var <- create_dna_df(var_df)
@@ -160,7 +155,7 @@ mpralm_fit_elem <- fit_elements(object = BcLabelMPRASetExample, normalize=TRUE, 
 ```
 
 ### Visualisation and results
-In this section, we will examine the visualization of our analysis results using the `mpra_treat` and `plot_groups` functions. 
+In this section, we will examine the visualization of our analysis results using the `mpra_treat` and `plot_groups` functions.
 To visualize our results, we utilize the `plot_groups` function, which allows us to compare logratios for each group. We use the results from `fit_elements` above. As negative controls we use `"control"` and as test `"tested"`.
 
 ```{r Visualization, fig=TRUE, fig.width=8, fig.height=4, warning=FALSE}
