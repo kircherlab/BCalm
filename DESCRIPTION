@@ -7,14 +7,18 @@ Authors@R: c(
       person("Martin", "Kircher", role = "aut"))
 Depends:
     R (>= 3.5), 
-	R (<= 4.4.0)
+    R (<= 4.4.0),
+    methods,
+    BiocGenerics,
+    SummarizedExperiment,
+    limma
 Imports:
     methods,
     BiocGenerics,
     SummarizedExperiment,
     limma,
     mpra,
-	curl,
+    curl,
     S4Vectors,
     scales,
     stats,
