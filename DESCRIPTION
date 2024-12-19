@@ -7,7 +7,6 @@ Authors@R: c(
       person("Martin", "Kircher", role = "aut"))
 Depends:
       R (>= 3.5),
-      R (<= 4.4.0),
       methods,
       BiocGenerics,
       SummarizedExperiment,
@@ -41,7 +40,7 @@ Collate:
       preprocess.R
       analyze.R
 VignetteBuilder: knitr
-License: Artistic-2.0
+License: MIT
 URL: https://github.com/kircherlab/BCalm
 BugReports: https://github.com/kircherlab/BCalm/issues
 biocViews: Software, GeneRegulation, Sequencing, FunctionalGenomics
