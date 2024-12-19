@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%B %d, %Y')`"
 package: "`r Githubpkg('kircherlab/BCalm')` (v0.1.0)"
 bibliography: bcalm.bib
 abstract: >
-  A presentation of how the `BCalm` package should be used for massively parallel reporter assays (MPRA) data analysis.
+  A guide on how to use `BCalm` for analyzing massively parallel reporter assays (MPRA) data.
 vignette: >
   %\VignetteIndexEntry{BCalm: A User's Guide}
   %\VignetteEngine{knitr::rmarkdown}
@@ -26,7 +26,7 @@ library(kableExtra) # for visually appealing tables
 
 # Introduction
 
-The `r Githubpkg('kircherlab/bcalm')` package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. BCalm is more robust to outlier MPRA counts. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
+The `r Githubpkg('kircherlab/BCalm')` package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. BCalm is more robust to outlier MPRA counts. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
 
 ## Citing BCalm
 The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom].

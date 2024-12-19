@@ -11,7 +11,7 @@ BCalm requires R >=3.5, <= 4.4.0 and can be installed using `devtools` or `remot
 #### Using conda
 We suggest using conda as a package management tool. Its installation guide can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-The provided package is available from GitHub. Here we give installation instructions using either `devtools` or `remotes`.
+`BCalm` is available from GitHub. Here we give installation instructions using either `devtools` or `remotes`.
 
 **Remotes:**
 ```bash
@@ -22,13 +22,15 @@ conda create -n BCalm_env r-base=4.4.0 r-remotes
 ```bash
 conda create -n BCalm_env r-base=4.4.0 r-devtools
 ```
-After activating the environment you can start the R terminal and install `BCalm` depending on which of the aforementioned packages you have installed. 
-
-```bash
-conda activate BCalm_env
+After activating the environment (`conda activate BCalm_env`) you can start the R terminal and install `BCalm` using either `devtools` or `remotes`, by loading the chosen package and running:
+```R
+install_github("kircherlab/BCalm")
 ```
 
-If you just want to install `BCalm` without installing suggested libraries (necessary for building the vignette and plotting), skip the following two code blocks.  
+After installation, you can start using `BCalm` (after loading it with `library(BCalm)`).
+For a more extensive user guide, please see the vignette (installation described below).
+
+### Vignette
 
 In the following code snippets, we build the vignette and install all necessary packages for the vignette. 
 
@@ -44,17 +46,6 @@ devtools::install_github("kircherlab/BCalm", build_vignette=TRUE, dependencies=T
 
 After this you can open the built vignette by `vignette('BCalm')` (Alternatively, we provide a pre-built vignette in `vignettes/BCalm.html`)
 
-**NOTE:** All required packages to run `BCalm` can also be installed as follows (this skips suggested libraries).
-**Remotes:**
-```R
-remotes::install_github("kircherlab/BCalm")
-```
-
-**Devtools:**
-```R
-devtools::install_github("kircherlab/BCalm")
-```
-### Vignette
 You can either follow the prepared vignette directly in the editor of your choice (`vignettes/BCalm.Rmd`) or scroll through it by opening it in your browser (`vignettes/BCalm.html`).
 
 
