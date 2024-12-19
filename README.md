@@ -9,9 +9,9 @@ BCalm requires R >=3.5, <= 4.4.0 and can be installed using `devtools` or `remot
 ### Installation guide:
 
 #### Using conda
-The installation guide assumes conda as package management tool is installed. How to install can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+We suggest using conda as a package management tool. Its installation guide can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
-The provided package is available from Github and we will show how to install it with either `devtools` or `remotes`.
+The provided package is available from GitHub. Here we give installation instructions using either `devtools` or `remotes`.
 
 **Remotes:**
 ```bash
@@ -28,7 +28,7 @@ After activating the environment you can start the R terminal and install `BCalm
 conda activate BCalm_env
 ```
 
-If you just want to install `BCalm` without installing packages only necessary for the vignette skip the following two code blocks.  
+If you just want to install `BCalm` without installing suggested libraries (necessary for building the vignette and plotting), skip the following two code blocks.  
 
 In the following code snippets, we build the vignette and install all necessary packages for the vignette. 
 
@@ -42,9 +42,9 @@ remotes::install_github("kircherlab/BCalm", build_vignette=TRUE, dependencies=TR
 devtools::install_github("kircherlab/BCalm", build_vignette=TRUE, dependencies=TRUE)
 ```
 
-After this you can open the build vignette by `vignette('BCalm')` (This is not possible if you are working on WSL but the vignette can be found at `vignettes/BCalm.html`)
+After this you can open the built vignette by `vignette('BCalm')` (Alternatively, we provide a pre-built vignette in `vignettes/BCalm.html`)
 
-**NOTE:** All required packages to run `BCalm` are installed if you use the following code as well. This command will not install additional packages only used by the vignette nor build the vignette.
+**NOTE:** All required packages to run `BCalm` can also be installed as follows (this skips suggested libraries).
 **Remotes:**
 ```R
 remotes::install_github("kircherlab/BCalm")
