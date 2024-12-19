@@ -59,7 +59,7 @@ You can either follow the prepared vignette directly in the editor of your choic
 
 
 ### How to cite: 
-The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the mpra package (Myint et al. 2019) and the limma-voom framework (Law et al. 2014).
+The `BCalm` package is still unpublished, citing details will be provided later. When using `BCalm`, please cite the mpra package (Myint et al. 2019) and the limma-voom framework (Law et al. 2014).
 
 #### References
 Myint, Leslie, Dimitrios G. Avramopoulos, Loyal A. Goff, and Kasper D. Hansen. *Linear models enable powerful differential activity analysis in massively parallel reporter assays.* BMC Genomics 2019, 209. doi: 10.1186/s12864-019-5556-x.
