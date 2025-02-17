@@ -2,7 +2,7 @@
 
 BCalm is a package that provides a modification from [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
 BCalm allows users to use individual barcodes as model input.
-See the vignette for examples on how to run BCalm.
+See the [paper](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-025-06065-9) for a detailed description, and the vignette for examples on how to run BCalm.
 
 BCalm requires R >=3.5, <= 4.4.0 and can be installed using `devtools` or `remotes`.
 
@@ -50,7 +50,9 @@ You can either follow the prepared vignette directly in the editor of your choic
 
 
 ### How to cite: 
-The `BCalm` package is still unpublished, citing details will be provided later. When using `BCalm`, please cite the mpra package (Myint et al. 2019) and the limma-voom framework (Law et al. 2014).
+Keukeleire, P., Rosen, J.D., Göbel-Knapp, A. et al. Using individual barcodes to increase quantification power of massively parallel reporter assays. BMC Bioinformatics 26, 52 (2025). https://doi.org/10.1186/s12859-025-06065-9
+
+The paper for the `BCalm` package can be found [here](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-025-06065-9). When using `BCalm`, please also cite the mpra package (Myint et al. 2019) and the limma-voom framework (Law et al. 2014).
 
 #### References
 Myint, Leslie, Dimitrios G. Avramopoulos, Loyal A. Goff, and Kasper D. Hansen. *Linear models enable powerful differential activity analysis in massively parallel reporter assays.* BMC Genomics 2019, 209. doi: 10.1186/s12864-019-5556-x.
