@@ -38,29 +38,65 @@ calculate_corr <- function(object, type = "pearson"){
     return(corr_matrix)
 }
 
-plot_corr <- function(object, corr_matrix){
- 
-    # Extract logFC values for the chosen replicates
-    xvals <- object[["logFC_1"]]
-    yvals <- object[["logFC_2"]]
-
-    data <- data.frame(x = xvals,y = yvals)
-    # Get correlation value from the matrix
-    corr_val <- corr_matrix[1, 2]
-
-    # Generate scatter plot
-    plot <- ggplot(data, aes(x = x, y = y)) +
-        geom_point(alpha = 0.5, color = "blue") +  # Scatter points
-        geom_smooth(method = "lm", color = "red", se = FALSE) +  # Correlation line
-        ggtitle(paste("Scatterplot of Replicate", 1, "vs Replicate", 2)) +
-        xlab("Replicate 1") +
-        ylab("Replicate 2") +
+plot_corr<- function(object, corr_matrix, output_file, axis_limits = NULL) {
+    
+    #Scan for all logfc columns
+    logFC_cols <- grep("logFC_", colnames(object), value = TRUE)
+    
+    # create nececsary plot combinations
+    pairs <- combn(logFC_cols, 2, simplify = FALSE)
+    
+    # min/max for axis limit
+    if (is.null(axis_limits)) {
+        all_vals <- unlist(object[logFC_cols], use.names = FALSE)
+        axis_limits <- c(min(all_vals, na.rm = TRUE), max(all_vals, na.rm = TRUE))
+    }
+    
+    # Dataset for plot
+    plot_data <- data.frame()
+    
+    for (pair in pairs) {
+        rep_x <- pair[1]
+        rep_y <- pair[2]
+        
+        xvals <- object[[rep_x]]
+        yvals <- object[[rep_y]]
+        
+        rep_num_x <- gsub("logFC_", "", rep_x)
+        rep_num_y <- gsub("logFC_", "", rep_y)
+        
+        # Get correlations
+        corr_val <- round(corr_matrix[as.numeric(rep_num_x), as.numeric(rep_num_y)], 3)
+        
+        # New data
+        plot_data <- rbind(plot_data, data.frame(
+            x = xvals, 
+            y = yvals, 
+            replicate_pair = paste("Rep", rep_num_x, "vs Rep", rep_num_y, "\nr =", corr_val)
+        ))
+    }
+    
+    #Scatterplot
+    plot <- ggplot(plot_data, aes(x = x, y = y)) +
+        geom_point(alpha = 0.5, color = "black") +
+        geom_smooth(method = "lm", color = "blue", se = FALSE) +  
+        geom_abline(slope = 1, intercept = 0, color = "black", linetype = "dashed") + 
         theme_minimal() +
-        annotate("text", x = min(xvals, na.rm = TRUE), 
-                 y = max(yvals, na.rm = TRUE), 
-                 label = paste("r =", round(corr_val, 3)), 
-                 hjust = 0, vjust = 1, size = 5, color = "red")
-
+        theme(
+            panel.border = element_rect(color = "black", fill = NA, size = 1),  
+            axis.line = element_line(color = "black", size = 1),
+            axis.text = element_text(size = 10),
+            axis.title = element_text(size = 12)
+        ) +
+        coord_fixed(ratio = 1) +  
+        scale_x_continuous(limits = axis_limits) +  
+        scale_y_continuous(limits = axis_limits) +
+        facet_wrap(~replicate_pair, scales = "fixed")  # All in one figure
+        
+    # Save
+    png(output_file)
+    print(plot)  
     dev.off()
+    
     return(plot)
 }
