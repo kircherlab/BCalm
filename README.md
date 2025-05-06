@@ -34,7 +34,7 @@ For a more extensive user guide, please see the vignette (installation described
 > **Note:**
 > If you have problems installing BCalm dependencies (e.g. similar to [issue #10](https://github.com/kircherlab/BCalm/issues/10)) you can install them via conda. Due to one dependency (`bioconductor-genomeinfodbdata`) we have to use the gcc7 label for the bioconda channel. R base version might be different to `4.4.0` but BCALm should work on all R versions `bioconductor-mpra` is supported.
 > ```bash
-> conda install -c bioconda/label/gcc7 -c conda-forge bioconductor-mpra r-devtools r-tidyr r-ggplot2
+> conda install -c bioconda/label/gcc7 -c conda-forge bioconductor-mpra r-devtools r-tidyr r-ggplot2 r-dplyr
 > ```
 
 
