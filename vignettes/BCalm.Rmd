@@ -21,7 +21,6 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE, crop=NULL)
 library(BCalm)
 library(dplyr)
 library(ggplot2)
-library(kableExtra) # for visually appealing tables
 ```
 
 # Introduction
@@ -35,7 +34,7 @@ The BCalm package is still unpublished, citing details will be provided later. W
 The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools].
 The package requires R >= 3.5, <= 4.4.0.
 If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
-To display the vignette correctly, the `kableExtra` and `ggplot2` packages are required.
+To display the vignette correctly, the `ggplot2` package is required.
 
 # Preprocessing data
 
@@ -46,7 +45,7 @@ The input files used here were obtained from  `r Githubpkg('kircherlab/MPRAsnake
 data("BcSetExample")
 nr_reps = 3
 # show the data
-kable(head(BcSetExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(BcSetExample))
 ```
 
 In general, any sequence can be tested using an MPRA. Possible analyses can be differentiated by whether they compare the activity of different conditions of the same region, such as variant testing, or whether they compare the activities of different regions.
@@ -60,13 +59,12 @@ To prepare data for variant testing, we use the `create_var_df` function from BC
 # load the variant map
 data("MapExample")
 # show the data
-kable(head(MapExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(MapExample))
 
 # create the variant dataframe by adding the variant ID to the DNA and RNA counts
 var_df <- create_var_df(BcSetExample, MapExample)
 # show the data
-kable(head(var_df), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
-
+print(head(var_df))
 ```
 
 Optionally, downsampling can be performed to our dataframe `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. This way, the number of barcodes of oligos with many barcodes are reduced, which simplifies the data handling and reduces the sparseness of the data table (i.e. increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`, with a default of 0.975.
@@ -80,11 +78,11 @@ After downsampling the barcode counts in our dataset, we can prepare the data fo
 Only six rows are shown here (original size of the dataframe 996 × 474).
 ```{r Creating dna dataframe from var_df}
 dna_var <- create_dna_df(var_df)
-kable(head(dna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(dna_var))
 ```
 ```{r Creating rna dataframe from var_df}
 rna_var <- create_rna_df(var_df)
-kable(head(rna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(rna_var))
 ```
 Now we create the MPRAset used as input to BCalm.
 
@@ -99,7 +97,7 @@ The dataset is the same one we used above, but we have to add labels to the data
 ```{r LabelsVec}
 data(LabelExample)
 table(LabelExample)
-kable(head(LabelExample), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(LabelExample))
 ```
 
 Once again, we perform downsampling on this dataset using the `downsample_barcodes` function.
@@ -135,7 +133,7 @@ block_vector <- rep(1:nr_reps, each=bcs)
 mpralm_fit_var <- mpralm(object = BcVariantMPRASetExample, design = design, aggregate = "none", normalize = TRUE, model_type = "corr_groups", plot = FALSE, block = block_vector)
 
 top_var <- topTable(mpralm_fit_var, coef = 2, number = Inf)
-kable(head(rna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+print(head(rna_var))
 ```
 
 ```{r Volcano Plot}

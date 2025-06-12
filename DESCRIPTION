@@ -18,8 +18,7 @@ Suggests:
       rmarkdown,
       RUnit,
       testthat (>= 3.0.0),
-      ggplot2,
-      kableExtra
+      ggplot2
 Imports:
       mpra,
       S4Vectors,
