@@ -3,13 +3,11 @@ fit_elements <- function(object, normalize=TRUE, block = NULL, ...) {
 	if (normalize) {
 		object <- normalize_counts(object, block=block)
 	}
-	mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
-						normalize = F, model_type = "indep_groups", 
-						block = block, ...)	
-	if (! endomorphic) {
-		mpralm_fit$label <- getLabel(object)
-		mpralm_fit$logFC <- mpralm_fit$coefficients
-	}
+	mpralm_fit <- mpralm(object = object, design = design, aggregate = "none",
+						normalize = F, model_type = "indep_groups",
+						block = block, ...)
+    mpralm_fit$label <- getLabel(object)
+    mpralm_fit$logFC <- mpralm_fit$coefficients
 	return(mpralm_fit)
 }
 
@@ -31,7 +29,7 @@ compute_logratio <- function(object, aggregate = c("mean", "sum", "none")) {
         rna <- getRNA(object, aggregate = FALSE)
         eid <- getEid(object)
         logr <- log2(rna + 1) - log2(dna + 1)
-        
+
         by_out <- by(logr, eid, colMeans, na.rm = TRUE)
         logr <- do.call("rbind", by_out)
         rownames(logr) <- names(by_out)
