@@ -1,11 +1,21 @@
 fit_elements <- function(object, normalize=TRUE, block = NULL, endomorphic=FALSE, normalizeSize=1e9, ...) {
 	design <- data.frame(rep(1, ncol(object)))
 	if (normalize) {
-		object <- normalize_counts(object, normalizeSize=normalizeSize, block=block)
+		if ("normalizeSize" %in% names(formals(normalize_counts))) {
+			object <- normalize_counts(object, normalizeSize=normalizeSize, block=block)
+		} else {
+			object <- normalize_counts(object, block=block)
+		}
 	}
-	mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
+	if ("endomorphic" %in% names(formals(mpralm))) {
+		mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
 						normalize = F, model_type = "indep_groups", 
-						block = block, endomorphic = endomorphic, normalizeSize = normalizeSize,...)	
+						block = block, endomorphic = endomorphic, normalizeSize = normalizeSize, ...)
+	} else {
+		mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
+						normalize = F, model_type = "indep_groups", 
+						block = block, ...)
+	}
 	if (! endomorphic) {
 		mpralm_fit$label <- getLabel(object)
 		mpralm_fit$logFC <- mpralm_fit$coefficients
