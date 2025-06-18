@@ -1,4 +1,4 @@
-fit_elements <- function(object, normalize=TRUE, block = NULL, endomorphic=FALSE, normalizeSize=1e9, ...) {
+fit_elements <- function(object, normalize=TRUE, block = NULL, ...) {
 	design <- data.frame(rep(1, ncol(object)))
 	if (normalize) {
 		if ("normalizeSize" %in% names(formals(normalize_counts))) {
@@ -41,7 +41,7 @@ compute_logratio <- function(object, aggregate = c("mean", "sum", "none")) {
         rna <- getRNA(object, aggregate = FALSE)
         eid <- getEid(object)
         logr <- log2(rna + 1) - log2(dna + 1)
-        
+
         by_out <- by(logr, eid, colMeans, na.rm = TRUE)
         logr <- do.call("rbind", by_out)
         rownames(logr) <- names(by_out)
