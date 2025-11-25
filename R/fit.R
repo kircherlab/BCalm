@@ -2,11 +2,11 @@ fit_elements <- function(object, normalize=TRUE, block = NULL, endomorphic=FALSE
 	design <- data.frame(rep(1, ncol(object)))
 	if ("endomorphic" %in% names(formals(mpralm))) {
 		mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
-						normalize = T, model_type = "corr_groups", 
+						normalize = normalize, model_type = "corr_groups", 
 						block = block, endomorphic = endomorphic, normalizeSize = normalizeSize, ...)
 	} else {
 		mpralm_fit <- mpralm(object = object, design = design, aggregate = "none", 
-						normalize = T, model_type = "corr_groups", 
+						normalize = normalize, model_type = "corr_groups", 
 						block = block, ...)
 	}
 	if (! endomorphic) {
