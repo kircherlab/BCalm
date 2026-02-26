@@ -19,6 +19,11 @@ dna_log_2 <- dna
 dna_log_2["name_000001", "sample_count_1_bc_1"] <- NA
 mpra_log_2 <- MPRASet(DNA = dna_log_2, RNA = dna, eid = row.names(dna), barcode = NULL, label=labels_vec)
 
+# block vector for replicates
+nr_reps <- 2
+bcs <- ncol(dna) / nr_reps
+block_vector <- rep(1:nr_reps, each = bcs)
+
 # to test outcome type endometric == TRUE
 fit_MPRA_Set <- fit_elements(object = mpra_log_2, normalize=TRUE, block = block_vector, endomorphic = TRUE)
 fit_MArrayLM <- fit_elements(object = mpra_log_2, normalize=TRUE, block = block_vector)

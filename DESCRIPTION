@@ -28,6 +28,8 @@ Imports:
       graphics,
       statmod,
       tidyr,
+      dplyr,
+      rlang,
       GenomeInfoDb,
       IRanges,
       GenomicRanges,

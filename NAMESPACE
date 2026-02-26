@@ -9,6 +9,8 @@ importFrom("stats", "approxfun", "lowess")
 importFrom("statmod", "mixedModel2Fit")
 importFrom("tidyr", "pivot_wider")
 importFrom("tidyr", "unite")
+importFrom("dplyr", "%>%", "group_by", "summarise", "mutate", "filter", "ungroup", "pull", "select", "n", "row_number")
+importFrom("rlang", "sym")
 importFrom("mpra", MPRASet, getRNA, getDNA, getBarcode, getEid, getEseq, normalize_counts, mpralm, get_precision_weights)
 
 exportClasses("MPRASet")
