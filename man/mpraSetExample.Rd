@@ -7,13 +7,13 @@
   Example data for the mpra package.
 }
 \description{
-  Example data for the MPRA package. \code{mpraSetExample} and 
-  \code{mpraSetAggExample} come from a study by Inoue et al 
-  that compares episomal and lentiviral MPRA. The former contains 
-  data at the barcode level and the latter contains data 
-  aggregated over barcodes. \code{mpraSetAllelicExample} come from 
-  a study by Tewhey et al that looks at regulatory activity of 
-  allelic versions of thousands of SNPs to follow up on prior 
+  Example data for the MPRA package. \code{mpraSetExample} and
+  \code{mpraSetAggExample} come from a study by Inoue et al
+  that compares episomal and lentiviral MPRA. The former contains
+  data at the barcode level and the latter contains data
+  aggregated over barcodes. \code{mpraSetAllelicExample} come from
+  a study by Tewhey et al that looks at regulatory activity of
+  allelic versions of thousands of SNPs to follow up on prior
   eQTL results.
 }
 \usage{
@@ -25,13 +25,13 @@ data("mpraSetAllelicExample")
   An \code{MPRASet}.
 }
 \details{
-  \code{mpraSetExample} contains barcode level information for the 
+  \code{mpraSetExample} contains barcode level information for the
   study by Inoue et al.
-  \code{mpraSetAggExample} contains count information from 
-  \code{mpraSetExample} where the counts have been summed over 
+  \code{mpraSetAggExample} contains count information from
+  \code{mpraSetExample} where the counts have been summed over
   barcodes for each element.
-  \code{mpraSetAllelicExample} contains count information for the 
-  Tewhey et al study. The counts have been summed over barcodes 
+  \code{mpraSetAllelicExample} contains count information for the
+  Tewhey et al study. The counts have been summed over barcodes
   for each element.
 }
 \source{
@@ -41,10 +41,10 @@ data("mpraSetAllelicExample")
   GSE83894 and GSE75661.
 }
 \references{
-  Inoue, Fumitaka, Martin Kircher, Beth Martin, Gregory M. Cooper, 
-  Daniela M. Witten, Michael T. McManus, Nadav Ahituv, and 
-  Jay Shendure. \emph{A Systematic Comparison Reveals Substantial 
-  Differences in Chromosomal versus Episomal Encoding of Enhancer 
+  Inoue, Fumitaka, Martin Kircher, Beth Martin, Gregory M. Cooper,
+  Daniela M. Witten, Michael T. McManus, Nadav Ahituv, and
+  Jay Shendure. \emph{A Systematic Comparison Reveals Substantial
+  Differences in Chromosomal versus Episomal Encoding of Enhancer
   Activity}. Genome Research 2017, 27(1):38-52.
   \doi{10.1101/gr.212092.116}.
 
