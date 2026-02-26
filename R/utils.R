@@ -22,5 +22,5 @@ utils::globalVariables(c(
 
 .onLoad <- function(libname, pkgname) {
     # Override the compute_logratio function in the mpra namespace
-    assignInNamespace("compute_logratio", compute_logratio, ns = "mpra")
+    base::assignInNamespace("compute_logratio", compute_logratio, ns = "mpra")
 }

@@ -1,7 +1,5 @@
 library(mpra)
 library(testthat)
-library(usethis)
-library(devtools)
 library(tidyr)
 library(dplyr)
 ## Data preparation for tests
