@@ -1,6 +1,6 @@
 # BCalm and analyze your MPRA data
 
-BCalm is a package that provides a modification from [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
+BCalm is a package that provides a modification of [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
 BCalm allows users to use individual barcodes as model input.
 See the [paper](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-025-06065-9) for a detailed description, and the vignette for examples on how to run BCalm.
 

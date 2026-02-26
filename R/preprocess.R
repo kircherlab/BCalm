@@ -1,8 +1,9 @@
 downsample_barcodes <- function(df, id_column_name = "name", percentile = 0.95) {
     if (!id_column_name %in% names(df)) {
-        warning(paste("Column", id_column_name, "does not exist in the DataFrame.
-			Provide an existing column name to the variable id_column_name. Returning the original DataFrame."))
-        return(df) # Return the original DataFrame if the column does not exist
+        warning(paste("Column", id_column_name, "does not exist in the data frame.",
+			"Provide an existing column name to the variable id_column_name.",
+			"Returning the original data frame."))
+        return(df) # Return the original data frame if the column does not exist
     }
     if (any(names(df) == "allele")) {
         # Calculate the 0.95th quantile of the number of barcodes across all groups

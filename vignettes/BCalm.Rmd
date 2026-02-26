@@ -31,10 +31,10 @@ The `r Githubpkg('kircherlab/BCalm')` package provides a framework for analyzing
 ## Citing BCalm
 The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom].
 
-## Additional information for the installation
+## Additional information for installation
 The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools].
 The package requires R >= 3.5, <= 4.4.0.
-If you have any trouble with the provided package feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
+If you have any trouble with the provided package, feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
 To display the vignette correctly, the `kableExtra` and `ggplot2` packages are required.
 
 # Preprocessing data
@@ -69,7 +69,7 @@ kable(head(var_df), "html") %>% kable_styling("striped") %>% scroll_box(width = 
 
 ```
 
-Optionally, downsampling can be performed to our dataframe `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. This way, the number of barcodes of oligos with many barcodes are reduced, which simplifies the data handling and reduces the sparseness of the data table (i.e. increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`, with a default of 0.975.
+Optionally, downsampling can be performed on our data frame `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. This way, the number of barcodes for oligos with many barcodes is reduced, which simplifies data handling and reduces the sparseness of the data table (i.e., increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`, with a default of 0.975.
 The `id_column_name` argument specifies the column in the input data frame that contains the unique identifiers for each variant (here `variant_id`).
 
 ```{r Variant Downsampling}

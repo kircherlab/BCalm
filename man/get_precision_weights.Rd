@@ -21,8 +21,8 @@ get_precision_weights(logr, design, log_dna, span = 0.4, plot = TRUE, ...)
 }
 \details{
 Residual standard deviations are computed using the supplied outcomes
-and design matrix. The square root of the the residual standard
-deviations are modeled as a function of the average log2 aggregated DNA
+and design matrix. The square root of the residual standard
+deviations is modeled as a function of the average log2 aggregated DNA
 counts to estimate the copy number-variance relationship.
 }
 \value{

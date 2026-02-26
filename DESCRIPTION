@@ -1,7 +1,7 @@
 Package: BCalm
 Version: 0.99.0
-Title: Barcode Analysis using linear models
-Description: Tools for data management, count preprocessing, and differential analysis in massively parallel report assays (MPRA).
+Title: Barcode Analysis Using Linear Models
+Description: Tools for data management, count preprocessing, and differential analysis in massively parallel reporter assays (MPRA).
 Authors@R: c(
       person("Pia", "Keukeleire", role = c("cre", "aut"), email = "pia.keukeleire@uksh.de"),
       person("Martin", "Kircher", role = "aut"))

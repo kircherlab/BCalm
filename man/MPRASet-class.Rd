@@ -66,7 +66,7 @@ getEseq(object)
 Class \code{"\linkS4class{SummarizedExperiment}"}, directly.
 }
 \value{
-  The constrcutor function \code{MPRASet} returns an object of class
+  The constructor function \code{MPRASet} returns an object of class
   \code{"MPRASet"}.
 }
 \section{Accessors}{

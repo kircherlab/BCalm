@@ -33,7 +33,7 @@ mpralm(object, design, aggregate = c("mean", "sum", "none"), normalize = TRUE,
     mean-variance relationship.} 
 }
 \details{
-Using \code{method_type = "corr_groups"} use the
+Using \code{method_type = "corr_groups"} uses the
 \code{duplicateCorrelation} function from the \code{limma} package to
 estimate the intra-replicate correlation of log-ratio values.
 }
