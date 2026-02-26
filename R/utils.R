@@ -24,6 +24,6 @@ utils::globalVariables(c(
     # Override the compute_logratio function in the mpra namespace
     ns <- base::getNamespace("mpra")
     base::unlockBinding("compute_logratio", ns)
-    base::assignInNamespace("compute_logratio", compute_logratio, ns = "mpra")
+    utils::assignInNamespace("compute_logratio", compute_logratio, ns = "mpra")
     base::lockBinding("compute_logratio", ns)
 }
