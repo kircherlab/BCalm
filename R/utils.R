@@ -11,7 +11,8 @@ utils::globalVariables(c(
     "labs", "xlim", "geom_vline", "scale_color_manual", "guide_legend",
     "after_stat",
     # NSE column names used in dplyr and ggplot2 operations
-    "allele", "row_num", "n", "ID", "REF", "ALT", "max_bc", "label", "logFC"
+    "allele", "row_num", "n", "ID", "REF", "ALT", "max_bc", "label", "logFC",
+    "Barcode", "new_idx"
 ))
 
 .is_mpra_or_stop <- function(object) {
