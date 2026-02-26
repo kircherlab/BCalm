@@ -1,6 +1,6 @@
 ---
 name: test-coverage
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches: [master, development]
   pull_request:

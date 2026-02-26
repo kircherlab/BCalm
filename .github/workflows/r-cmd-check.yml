@@ -1,6 +1,6 @@
 ---
 name: R-CMD-check
-on:
+on: # yamllint disable-line rule:truthy
   push:
     branches: [master, development]
   pull_request:
