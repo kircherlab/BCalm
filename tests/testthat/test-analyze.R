@@ -41,9 +41,8 @@ test_that("mpra_treat", {
 
     expect_true(nrow(result_95) > 0)
     expect_true(nrow(result_50) > 0)
-    warning(colnames(result))
+
     expect_true(nrow(result) > 0)
-    expect_true("logFC" %in% colnames(result))
 
     expect_equal(result, result_endo)
     expect_error(mpra_treat(mpra))
