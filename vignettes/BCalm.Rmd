@@ -2,7 +2,7 @@
 title: "BCalm and analyze your MPRA data"
 author: "Pia Keukeleire"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-package: "`r Githubpkg('kircherlab/BCalm')` (v0.99.0)"
+version: "`r Githubpkg('kircherlab/BCalm')` (v`r packageVersion('BCalm')`)"
 bibliography: bcalm.bib
 abstract: >
   A guide on how to use `BCalm` for analyzing massively parallel reporter assays (MPRA) data.

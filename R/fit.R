@@ -1,4 +1,12 @@
 fit_elements <- function(object, normalize = TRUE, block = NULL, endomorphic = FALSE, normalizeSize = 1e9, ...) {
+    if (!("endomorphic" %in% names(formals(mpralm))) && endomorphic) {
+        warning(
+            "The 'endomorphic' argument is not available in the version ",
+            "of mpra you have installed. Please update mpra to use this ",
+            "argument. Proceeding with endomorphic = FALSE."
+        )
+        endomorphic <- FALSE
+    }
     design <- data.frame(rep(1, ncol(object)))
     if ("endomorphic" %in% names(formals(mpralm))) {
         mpralm_fit <- mpralm(
