@@ -2,7 +2,7 @@
 title: "BCalm and analyze your MPRA data"
 author: "Pia Keukeleire"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-package: "`r Githubpkg('kircherlab/BCalm')` (v0.1.0)"
+package: "`r Githubpkg('kircherlab/BCalm')` (v0.99.0)"
 bibliography: bcalm.bib
 abstract: >
   A guide on how to use `BCalm` for analyzing massively parallel reporter assays (MPRA) data.
@@ -28,11 +28,14 @@ library(kableExtra) # for visually appealing tables
 
 The `r Githubpkg('kircherlab/BCalm')` package provides a framework for analyzing data from Massively Parallel Reporter Assays (MPRA) and is built on top of the mpra package. BCalm adapts the existing mpralm method but enhances it by modeling individual barcode counts rather than aggregating counts per sequence. Furthermore, the package includes a set of pre-processing functions and plotting capabilities, facilitating the visualization and interpretation of results. BCalm is more robust to outlier MPRA counts. Variant and element analysis are both shown below together with a significance test of elements against a control group (e.g. negative controls).
 
-## Citing BCalm
-The BCalm package is still unpublished, citing details will be provided later. When using BCalm, please cite the `mpra` package [@mpralm] and the limma-voom framework [@voom].
+# Citing BCalm
+To cite the BCalm package please use [@bcalm]. When using BCalm you can additionally cite the `mpra` package [@mpralm] and the limma-voom framework [@voom].
+
+# Installation
+The BCalm package is available via bioconda (called `r-bcalm`) and can be installed via `conda install -c bioconda r-bcalm`).
 
 ## Additional information for installation
-The package is currently available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools].
+The package is also available on GitHub and can be installed using remotes [@remotes] or devtools [@devtools].
 The package requires R >= 3.5, <= 4.4.0.
 If you have any trouble with the provided package, feel free to let us know by creating an issue directly in the [BCalm GitHub repository](https://github.com/kircherlab/BCalm).
 To display the vignette correctly, the `kableExtra` and `ggplot2` packages are required.
@@ -69,7 +72,7 @@ kable(head(var_df), "html") %>% kable_styling("striped") %>% scroll_box(width = 
 
 ```
 
-Optionally, downsampling can be performed on our data frame `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. This way, the number of barcodes for oligos with many barcodes is reduced, which simplifies data handling and reduces the sparseness of the data table (i.e., increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`, with a default of 0.975.
+Optionally, downsampling can be performed on our data frame `var_df` now. The function `downsample_barcodes` allows users to reduce the number of barcodes while retaining a representative subset. This way, the number of barcodes for oligos with many barcodes is reduced, which simplifies data handling and reduces the sparseness of the data table (i.e., increased speed and reduced memory requirements). The degree of downsampling can be controlled by adjusting the sampling rate, which is expressed as a percentile value `percentile`, with a default of 0.95.
 The `id_column_name` argument specifies the column in the input data frame that contains the unique identifiers for each variant (here `variant_id`).
 
 ```{r Variant Downsampling}
@@ -90,7 +93,7 @@ Now we create the MPRAset used as input to BCalm.
 
 ```{r Variant MPRASet}
 # create the variant specific MPRAset
-BcVariantMPRASetExample <- MPRASet(DNA = dna_var, RNA = rna_var, eid = row.names(dna_var), barcode = NULL)
+BcVariantMPRASetExample <- mpra::MPRASet(DNA = dna_var, RNA = rna_var, eid = row.names(dna_var), barcode = NULL)
 ```
 
 ## Element testing
@@ -116,7 +119,7 @@ rna_elem <- create_rna_df(elem_df, id_column_name="name")
 To compare between test and control, we need to add the labels to the MPRASet.
 
 ```{r Element MPRASet}
-BcLabelMPRASetExample <- MPRASet(DNA = dna_elem, RNA = rna_elem, eid = row.names(dna_elem), barcode = NULL, label=LabelExample)
+BcLabelMPRASetExample <- BCalm::MPRASet(label = LabelExample, DNA = dna_elem, RNA = rna_elem, eid = row.names(dna_elem), barcode = NULL)
 ```
 
 With the data prepared and preprocessed, we now have the foundation to conduct our analysis.
@@ -132,10 +135,10 @@ The design matrix gives information which count comes from the reference and whi
 bcs <- ncol(dna_var) / nr_reps
 design <- data.frame(intcpt = 1, alt = grepl("alt", colnames(BcVariantMPRASetExample)))
 block_vector <- rep(1:nr_reps, each=bcs)
-mpralm_fit_var <- mpralm(object = BcVariantMPRASetExample, design = design, aggregate = "none", normalize = TRUE, model_type = "corr_groups", plot = FALSE, block = block_vector)
+mpralm_fit_var <- mpralm(object = BcVariantMPRASetExample, design = design, aggregate = "none", normalize = TRUE, model_type = "corr_groups", block = block_vector)
 
 top_var <- topTable(mpralm_fit_var, coef = 2, number = Inf)
-kable(head(rna_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
+kable(head(top_var), "html") %>% kable_styling("striped") %>% scroll_box(width = "100%")
 ```
 
 ```{r Volcano Plot}
@@ -151,7 +154,7 @@ We again set `normalize = TRUE` to perform total count normalization on the RNA 
 ```{r Fit elements, fig.width=8, fig.height=4}
 bcs <- ncol(dna_elem) / nr_reps
 block_vector <- rep(1:nr_reps, each=bcs)
-mpralm_fit_elem <- fit_elements(object = BcLabelMPRASetExample, normalize=TRUE, block = block_vector, plot = FALSE)
+mpralm_fit_elem <- fit_elements(object = BcLabelMPRASetExample, normalize = TRUE, block = block_vector)
 ```
 
 ### Visualisation and results
