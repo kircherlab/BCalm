@@ -7,7 +7,7 @@
 }
 \usage{
 fit_elements(object, normalize = TRUE, block = NULL, endomorphic = FALSE,
-  normalizeSize = 1e9, ...)
+  normalizeSize = 1e9, plot = FALSE, ...)
 }
 \arguments{
   \item{object}{An MPRASet object containing DNA and RNA counts.}
@@ -15,6 +15,7 @@ fit_elements(object, normalize = TRUE, block = NULL, endomorphic = FALSE,
   \item{block}{Optional vector or factor specifying replicate blocks.}
   \item{endomorphic}{Logical indicating whether to return an MPRASet result.}
   \item{normalizeSize}{Library size for normalization.}
+  \item{plot}{Logical indicating whether to plot the voom precision weights.}
   \item{...}{Additional arguments passed to \code{mpralm}.}
 }
 \value{
