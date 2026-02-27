@@ -6,7 +6,7 @@ c(
         author = c(
             person("Pia", "Keukeleire"),
             person(c("Jonathan", "D."), "Rosen"),
-            person("Angelina", "Göbel-Knapp"),
+            person("Angelina", "Gobel-Knapp"),
             person("Kilian", "Salomon"),
             person("Max", "Schubach"),
             person("Martin", "Kircher")
