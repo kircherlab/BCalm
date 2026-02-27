@@ -1,3 +1,11 @@
+[![DOI](https://zenodo.org/badge/858995953.svg)](https://doi.org/10.5281/zenodo.18802316)
+[![GitHub License](https://img.shields.io/github/license/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/blob/master/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/releases/latest)
+[![Bioconda Version](https://img.shields.io/conda/vn/bioconda/r-bcalm?label=bioconda)](https://bioconda.github.io/recipes/r-bcalm/README.html)
+[![R CMD check](https://github.com/kircherlab/BCalm/actions/workflows/r-cmd-check.yml/badge.svg?branch=master)](https://github.com/kircherlab/BCalm/actions/workflows/r-cmd-check.yml)
+[![GitHub Issues](https://img.shields.io/github/issues/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/pulls)
+
 # BCalm and analyze your MPRA data
 
 BCalm is a package that provides a modification of [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
