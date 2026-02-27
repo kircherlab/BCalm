@@ -1,3 +1,5 @@
+library(BCalm)
+
 ## Data preparation
 # Controlls without effect and tests with half positive half negative effect
 dna <- as.data.frame(matrix(rnorm(20 * 10, mean = 10, sd = sqrt(0.5)), nrow = 20, ncol = 10))

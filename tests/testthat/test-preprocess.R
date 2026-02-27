@@ -1,4 +1,4 @@
-library(mpra)
+library(BCalm)
 library(testthat)
 library(tidyr)
 library(dplyr)

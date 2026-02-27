@@ -1,3 +1,5 @@
+library(BCalm)
+
 ## Data preparation for tests
 
 # compute_logratio
