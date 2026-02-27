@@ -33,21 +33,21 @@ getEseq(object)
     aggregated to the element level (by summing across barcodes).}
   \item{DNA}{A matrix of DNA counts where rows correspond to elements or
     individual barcodes and columns to samples of conditions being
-    compared.} 
+    compared.}
   \item{RNA}{A matrix of RNA counts where rows correspond to elements or
     individual barcodes and columns to samples of conditions being
-    compared.} 
+    compared.}
   \item{barcode}{If barcodes are supplied, a \code{character} vector of
     length equal to the number of rows in \code{DNA} and \code{RNA}
     containing the barcode sequences or identifiers. \code{NULL}
-    otherwise.} 
+    otherwise.}
   \item{eid}{A \code{character} vector of length equal to the number of
     rows in \code{DNA} and \code{RNA} containing the enhancer
-    identifiers corresponding to each row.} 
+    identifiers corresponding to each row.}
   \item{eseq}{If supplied, a \code{character} vector of length equal to
     the number of rows in \code{DNA} and \code{RNA} containing the
     enhancer sequences corresponding to the regulatory elements in each
-    row. \code{NULL} otherwise.} 
+    row. \code{NULL} otherwise.}
   \item{...}{Further arguments to be passed to
     \code{SummarizedExperiment}.}
 }
@@ -60,7 +60,7 @@ getEseq(object)
   \code{rowData} slot.  We have chosen to store barcode and element as
   \code{character} to be flexible, although they are often DNA sequences
   (and could therefore be considered \code{DNAStringSet} (from package
-  Biostrings)). 
+  Biostrings)).
 }
 \section{Extends}{
 Class \code{"\linkS4class{SummarizedExperiment}"}, directly.
