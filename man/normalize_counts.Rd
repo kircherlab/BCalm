@@ -5,10 +5,12 @@
 Total count normalization of DNA and RNA counts.
 }
 \usage{
-normalize_counts(object, block = NULL)
+normalize_counts(object, normalizeSize = 1e+07, block = NULL)
 }
 \arguments{
   \item{object}{An object of class \code{MPRASet}.}
+  \item{normalizeSize}{A numeric value specifying the total count to which
+    all samples should be normalized. Default is \code{1e+07} (10 million).}
   \item{block}{A vector giving the sample designations of the columns of
     \code{object}. The default, \code{NULL}, indicates that all columns
     are separate samples.}
