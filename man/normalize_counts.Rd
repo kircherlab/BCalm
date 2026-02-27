@@ -31,5 +31,5 @@ and RNA counts.
 }
 \examples{
 data("mpraSetAggExample", package = "mpra")
-mpraSetAggExample <- normalize_counts(mpraSetAggExample)
+mpraSetAggExample <- normalize_counts(mpraSetAggExample, )
 }

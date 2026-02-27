@@ -68,7 +68,7 @@ and the \code{MArrayLM} results added as an attribute
   Bioinformatics 2005, 21 (9): 2067-75. \doi{10.1093/bioinformatics/bti270}.
 }
 \examples{
-data(mpraSetAggExample)
+data(mpraSetAggExample, package = "mpra")
 design <- data.frame(intcpt = 1,
                      episomal = grepl("MT", colnames(mpraSetAggExample)))
 mpralm_fit <- mpralm(object = mpraSetAggExample, design = design,
