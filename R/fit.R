@@ -22,8 +22,8 @@ fit_elements <- function(object, normalize = TRUE, block = NULL, endomorphic = F
         )
     }
     if (!endomorphic) {
-        mpralm_fit$label <- getLabel(object)
         mpralm_fit$logFC <- mpralm_fit$coefficients
+        mpralm_fit$label <- getLabel(object)
     }
     return(mpralm_fit)
 }

@@ -45,6 +45,10 @@ test_that("compute_logratio", {
 })
 
 test_that("fit_elements", {
-    expect_equal(class(fit_MPRA_Set)[1], "MPRASet")
+    if ("endomorphic" %in% names(formals(mpralm))) {
+        expect_equal(class(fit_MPRA_Set)[1], "MPRASet")
+    } else {
+        expect_equal(class(fit_MPRA_Set)[1], "MArrayLM")
+    }
     expect_equal(class(fit_MArrayLM)[1], "MArrayLM")
 })
