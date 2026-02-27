@@ -2,7 +2,7 @@
 .gitignore
 .lintr
 .yamllint.yml
-..Rcheck
+^\.\.Rcheck
 .git
 .github
 README.md
