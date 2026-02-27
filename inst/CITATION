@@ -1,31 +1,38 @@
-c(bibentry(bibtype = "Article",
-           key = "bcalm",
-           title = "Using individual barcodes to increase quantification power of massively parallel reporter assays",
-           author = c(
-               person("Pia", "Keukeleire"),
-               person(c("Jonathan", "D."), "Rosen"),
-               person("Angelina", "Göbel-Knapp"),
-               person("Kilian", "Salomon"),
-               person("Max", "Schubach"),
-               person("Martin", "Kircher")),
-           year = 2025,
-           journal = "BMC Bioinformatics",
-           volume = "26",
-           pages = "52",
-           doi = "10.1186/s12859-025-06065-9",
-           header = "To cite BCalm in publications use:"),
-  bibentry(bibtype = "Article",
-           key = "mpralm",
-           title = "Linear models enable powerful differential activity analysis in massively parallel reporter assays",
-           author = c(
-               person("Leslie", "Myint"),
-               person(c("Dimitrios", "G."), "Avramopoulos"),
-               person(c("Loyal", "A."), "Goff"),
-               person(c("Kasper", "D."), "Hansen")),
-           year = 2019,
-           journal = "BMC Genomics",
-           volume = "20",
-           pages = "209",
-           doi = "10.1186/s12864-019-5556-x",
-           header = "The underlying mpralm methodology is described in:")
-  )
+c(
+    bibentry(
+        bibtype = "Article",
+        key = "bcalm",
+        title = "Using individual barcodes to increase quantification power of massively parallel reporter assays",
+        author = c(
+            person("Pia", "Keukeleire"),
+            person(c("Jonathan", "D."), "Rosen"),
+            person("Angelina", "Göbel-Knapp"),
+            person("Kilian", "Salomon"),
+            person("Max", "Schubach"),
+            person("Martin", "Kircher")
+        ),
+        year = 2025,
+        journal = "BMC Bioinformatics",
+        volume = "26",
+        pages = "52",
+        doi = "10.1186/s12859-025-06065-9",
+        header = "To cite BCalm in publications use:"
+    ),
+    bibentry(
+        bibtype = "Article",
+        key = "mpralm",
+        title = "Linear models enable powerful differential activity analysis in massively parallel reporter assays",
+        author = c(
+            person("Leslie", "Myint"),
+            person(c("Dimitrios", "G."), "Avramopoulos"),
+            person(c("Loyal", "A."), "Goff"),
+            person(c("Kasper", "D."), "Hansen")
+        ),
+        year = 2019,
+        journal = "BMC Genomics",
+        volume = "20",
+        pages = "209",
+        doi = "10.1186/s12864-019-5556-x",
+        header = "The underlying mpralm methodology is described in:"
+    )
+)
