@@ -8,3 +8,4 @@ auto/
 inst/doc
 *.pdf
 *.html
+..Rcheck

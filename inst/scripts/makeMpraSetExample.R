@@ -7,7 +7,8 @@ library(mpra)
 files <- list.files("GSE83894", pattern = "-[DR]NA", full.names = TRUE)
 samples <- sapply(files %>% str_split("_"), function(x) {
     str_sub(str_split(x[2], "-")[[1]][1], 3, 3)
-}) %>% as.integer
+}) %>%
+    as.integer()
 cond <- sapply(files %>% str_split("_"), function(x) {
     str_sub(str_split(x[2], "-")[[1]][1], 1, 2)
 })
@@ -19,7 +20,9 @@ new_colnames <- paste0(cond, "_", samples, "_", count_type)
 counts <- lapply(seq_along(files), function(i) {
     read_tsv(files[i], col_names = c("barcode", new_colnames[i], "eid"))
 })
-counts <- Reduce(function(data1, data2) { full_join(data1, data2) }, counts)
+counts <- Reduce(function(data1, data2) {
+    full_join(data1, data2)
+}, counts)
 counts <- counts %>%
     mutate(bcid = barcode) %>%
     mutate(eid = str_replace(eid, ":[:digit:]*$", "")) %>%
@@ -33,13 +36,13 @@ dna_bc <- counts %>%
     select(eid, bcid, condition, sample, dna) %>%
     unite(col = cond_sample, condition, sample) %>%
     spread(key = cond_sample, value = dna)
-dna_mat_bc <- as.matrix(dna_bc[,3:ncol(dna_bc)])
+dna_mat_bc <- as.matrix(dna_bc[, 3:ncol(dna_bc)])
 rownames(dna_mat_bc) <- dna_bc$bcid
 rna_bc <- counts %>%
     select(eid, bcid, condition, sample, rna) %>%
     unite(col = cond_sample, condition, sample) %>%
     spread(key = cond_sample, value = rna)
-rna_mat_bc <- as.matrix(rna_bc[,3:ncol(rna_bc)])
+rna_mat_bc <- as.matrix(rna_bc[, 3:ncol(rna_bc)])
 rownames(rna_mat_bc) <- rna_bc$bcid
 
 ## Check that rows are identical in DNA and RNA
@@ -47,18 +50,21 @@ identical(rownames(dna_mat_bc), rownames(rna_mat_bc))
 ## Check that columns are identical in DNA and RNA
 identical(colnames(dna_mat_bc), colnames(rna_mat_bc))
 
-mpraSetExample <- MPRASet(DNA = dna_mat_bc, RNA = rna_mat_bc,
-                          eid = dna_bc$eid, barcode = dna_bc$bcid,
-                          eseq = NULL
-                  )
+mpraSetExample <- MPRASet(
+    DNA = dna_mat_bc, RNA = rna_mat_bc,
+    eid = dna_bc$eid, barcode = dna_bc$bcid,
+    eseq = NULL
+)
 
 save(mpraSetExample, file = "../../data/mpraSetExample.rda", compress = "xz")
 
 ## Aggregated counts
 counts_summ <- counts %>%
     group_by(eid, sample, condition) %>%
-    summarize(agg_rna = sum(rna, na.rm = TRUE),
-              agg_dna = sum(dna, na.rm = TRUE))
+    summarize(
+        agg_rna = sum(rna, na.rm = TRUE),
+        agg_dna = sum(dna, na.rm = TRUE)
+    )
 dna <- counts_summ %>%
     select(eid, sample, condition, agg_dna) %>%
     unite(col = cond_sample, condition, sample) %>%
@@ -68,9 +74,9 @@ rna <- counts_summ %>%
     unite(col = cond_sample, condition, sample) %>%
     spread(key = cond_sample, value = agg_rna, sep = "_")
 
-dna_mat <- as.matrix(dna[,2:ncol(dna)])
+dna_mat <- as.matrix(dna[, 2:ncol(dna)])
 rownames(dna_mat) <- dna$eid
-rna_mat <- as.matrix(rna[,2:ncol(rna)])
+rna_mat <- as.matrix(rna[, 2:ncol(rna)])
 rownames(rna_mat) <- rna$eid
 
 ## Check that rows are identical in DNA and RNA
@@ -79,18 +85,19 @@ identical(rownames(dna_mat), rownames(rna_mat))
 identical(colnames(dna_mat), colnames(rna_mat))
 
 
-mpraSetAggExample <- MPRASet(DNA = dna_mat, RNA = rna_mat,
-                          eid = rownames(dna_mat), barcode = NULL, eseq = NULL
-                  )
+mpraSetAggExample <- MPRASet(
+    DNA = dna_mat, RNA = rna_mat,
+    eid = rownames(dna_mat), barcode = NULL, eseq = NULL
+)
 
 save(mpraSetAggExample, file = "../../data/mpraSetAggExample.rda", compress = "xz")
 
 get_counts_GSE75661 <- function(file) {
     counts <- read_tsv(file)
-    counts <- counts %>% 
+    counts <- counts %>%
         gather(key = type, value = count, -Oligo) %>%
         separate(type, into = c("type", "sample"), sep = "_") %>%
-        mutate(sample = str_replace(sample, "r", "") %>% as.numeric, bcid = 1) %>%
+        mutate(sample = str_replace(sample, "r", "") %>% as.numeric(), bcid = 1) %>%
         spread(key = type, value = count) %>%
         dplyr::rename(eid = Oligo, dna = Plasmid)
 
@@ -119,12 +126,16 @@ counts <- get_counts_GSE75661(file)
 counts <- counts$na12878
 
 counts_summ <- counts %>%
-    mutate(snp_id = str_replace(eid, "_[AB]$", ""),
-           allele = str_extract(eid, "[AB]$")) %>%
+    mutate(
+        snp_id = str_replace(eid, "_[AB]$", ""),
+        allele = str_extract(eid, "[AB]$")
+    ) %>%
     select(snp_id, allele, sample, bcid, dna, rna) %>%
     group_by(snp_id, allele, sample) %>%
-    summarize(agg_rna = sum(rna, na.rm = TRUE),
-              agg_dna = sum(dna, na.rm = TRUE)) %>%
+    summarize(
+        agg_rna = sum(rna, na.rm = TRUE),
+        agg_dna = sum(dna, na.rm = TRUE)
+    ) %>%
     filter(!is.na(allele))
 dna <- counts_summ %>%
     select(snp_id, allele, sample, agg_dna) %>%
@@ -138,13 +149,14 @@ rna <- counts_summ %>%
 cat("Row orders are identical in DNA and RNA:", identical(dna$snp_id, rna$snp_id), "\n")
 cat("Columns are identical in DNA and RNA:", identical(colnames(dna), colnames(rna)), "\n")
 
-dna_mat <- as.matrix(dna[,2:ncol(dna)])
+dna_mat <- as.matrix(dna[, 2:ncol(dna)])
 rownames(dna_mat) <- dna$snp_id
-rna_mat <- as.matrix(rna[,2:ncol(rna)])
+rna_mat <- as.matrix(rna[, 2:ncol(rna)])
 rownames(rna_mat) <- rna$snp_id
 
-mpraSetAllelicExample <- MPRASet(DNA = dna_mat, RNA = rna_mat,
-                          eid = rownames(dna_mat), barcode = NULL, eseq = NULL
-                  )
+mpraSetAllelicExample <- MPRASet(
+    DNA = dna_mat, RNA = rna_mat,
+    eid = rownames(dna_mat), barcode = NULL, eseq = NULL
+)
 
 save(mpraSetAllelicExample, file = "../../data/mpraSetAllelicExample.rda", compress = "xz")
