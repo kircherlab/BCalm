@@ -13,11 +13,11 @@ get_precision_weights(logr, design, log_dna, span = 0.4, plot = TRUE, ...)
   \item{design}{Design matrix specifying comparisons of interest.}
   \item{log_dna}{Matrix of log2 aggregated DNA counts of the same dimension as \code{logr}.}
   \item{span}{The smoothing span for \code{lowess} in estimating the
-    copy number-variance relationship. Default: 0.4.} 
+    copy number-variance relationship. Default: 0.4.}
   \item{plot}{If \code{TRUE}, plot the copy number-variance relationship.}
   \item{\dots}{Further arguments to be passed to \code{lmFit} for
     obtaining residual standard deviations used in estimating the
-    copy number-variance relationship.} 
+    copy number-variance relationship.}
 }
 \details{
 Residual standard deviations are computed using the supplied outcomes
@@ -30,11 +30,11 @@ A matrix of precision weights of the same dimension as \code{logr} and \code{log
 }
 \references{
   Law, Charity W., Yunshun Chen, Wei Shi, and Gordon K. Smyth.
-  \emph{Voom: Precision Weights Unlock Linear Model Analysis Tools for RNA-Seq Read Counts}. 
+  \emph{Voom: Precision Weights Unlock Linear Model Analysis Tools for RNA-Seq Read Counts}.
   Genome Biology 2014, 15:R29. \doi{10.1186/gb-2014-15-2-r29}.
 }
 \examples{
-data(mpraSetAggExample)
+data("mpraSetAggExample", package = "mpra")
 design <- data.frame(intcpt = 1,
                      episomal = grepl("MT", colnames(mpraSetAggExample)))
 logr <- compute_logratio(mpraSetAggExample, aggregate = "none")

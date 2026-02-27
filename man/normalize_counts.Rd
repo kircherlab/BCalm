@@ -28,6 +28,6 @@ An object of class \code{MPRASet} with the total count-normalized DNA
 and RNA counts.
 }
 \examples{
-data(mpraSetAggExample)
+data("mpraSetAggExample", package = "mpra")
 mpraSetAggExample <- normalize_counts(mpraSetAggExample)
 }
