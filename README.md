@@ -61,7 +61,7 @@ devtools::install_github("kircherlab/BCalm", build_vignette=TRUE, dependencies=T
 
 After this you can open the built vignette by `vignette('BCalm')` (Alternatively, we provide a pre-built vignette in `vignettes/BCalm.html`)
 
-You can either follow the prepared vignette directly in the editor of your choice (`vignettes/BCalm.Rmd`) or scroll through it by opening it in your browser (`vignettes/BCalm.html`).
+You can either follow the prepared vignette directly in the editor of your choice (`vignettes/BCalm.Rmd`) or scroll through it by opening it in your browser (`inst/doc//BCalm.html`).
 
 
 ### How to cite: 
