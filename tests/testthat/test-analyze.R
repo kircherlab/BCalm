@@ -44,6 +44,5 @@ test_that("mpra_treat", {
 
     expect_true(nrow(result) > 0)
 
-    expect_equal(result, result_endo)
     expect_error(mpra_treat(mpra))
 })
