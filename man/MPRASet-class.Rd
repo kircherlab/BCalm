@@ -16,9 +16,7 @@
 }
 \usage{
 ## Constructor
-MPRASet(DNA = new("matrix"), RNA = new("matrix"),
-        barcode = new("character"), eid = new("character"),
-        eseq = new("character"), ...)
+MPRASet(label = new("character"), ...)
 
 ## Accessors
 getRNA(object, aggregate = FALSE)
@@ -31,25 +29,9 @@ getEseq(object)
   \item{object}{A \code{MPRASet} object.}
   \item{aggregate}{A \code{logical} indicating if data should be
     aggregated to the element level (by summing across barcodes).}
-  \item{DNA}{A matrix of DNA counts where rows correspond to elements or
-    individual barcodes and columns to samples of conditions being
-    compared.} 
-  \item{RNA}{A matrix of RNA counts where rows correspond to elements or
-    individual barcodes and columns to samples of conditions being
-    compared.} 
-  \item{barcode}{If barcodes are supplied, a \code{character} vector of
-    length equal to the number of rows in \code{DNA} and \code{RNA}
-    containing the barcode sequences or identifiers. \code{NULL}
-    otherwise.} 
-  \item{eid}{A \code{character} vector of length equal to the number of
-    rows in \code{DNA} and \code{RNA} containing the enhancer
-    identifiers corresponding to each row.} 
-  \item{eseq}{If supplied, a \code{character} vector of length equal to
-    the number of rows in \code{DNA} and \code{RNA} containing the
-    enhancer sequences corresponding to the regulatory elements in each
-    row. \code{NULL} otherwise.} 
-  \item{...}{Further arguments to be passed to
-    \code{SummarizedExperiment}.}
+  \item{label}{A character vector of labels to store with the elements.
+    When provided, the labels are aligned to the element IDs.}
+  \item{...}{Further arguments passed to \code{mpra::MPRASet}.}
 }
 \section{Slots}{
   Slots are as described in a \code{SummarizedExperiment}.  Of
@@ -60,13 +42,13 @@ getEseq(object)
   \code{rowData} slot.  We have chosen to store barcode and element as
   \code{character} to be flexible, although they are often DNA sequences
   (and could therefore be considered \code{DNAStringSet} (from package
-  Biostrings)). 
+  Biostrings)).
 }
 \section{Extends}{
 Class \code{"\linkS4class{SummarizedExperiment}"}, directly.
 }
 \value{
-  The constrcutor function \code{MPRASet} returns an object of class
+  The constructor function \code{MPRASet} returns an object of class
   \code{"MPRASet"}.
 }
 \section{Accessors}{

@@ -1,6 +1,14 @@
+[![DOI](https://zenodo.org/badge/858995953.svg)](https://doi.org/10.5281/zenodo.18802316)
+[![GitHub License](https://img.shields.io/github/license/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/blob/master/LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/releases/latest)
+[![Bioconda Version](https://img.shields.io/conda/vn/bioconda/r-bcalm?label=bioconda)](https://bioconda.github.io/recipes/r-bcalm/README.html)
+[![R CMD check](https://github.com/kircherlab/BCalm/actions/workflows/r-cmd-check.yml/badge.svg?branch=master)](https://github.com/kircherlab/BCalm/actions/workflows/r-cmd-check.yml)
+[![GitHub Issues](https://img.shields.io/github/issues/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kircherlab/BCalm)](https://github.com/kircherlab/BCalm/pulls)
+
 # BCalm and analyze your MPRA data
 
-BCalm is a package that provides a modification from [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
+BCalm is a package that provides a modification of [the mpralm package](https://github.com/hansenlab/mpra/tree/master), an R package that provides tools for differential analysis in MPRA studies.
 BCalm allows users to use individual barcodes as model input.
 See the [paper](https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-025-06065-9) for a detailed description, and the vignette for examples on how to run BCalm.
 
@@ -8,8 +16,14 @@ BCalm requires R >=3.5, <= 4.4.0 and can be installed using `devtools` or `remot
 
 ### Installation guide:
 
-#### Using conda
-We suggest using conda as a package management tool. Its installation guide can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+#### Using conda (recommended)
+We suggest using conda as a package management tool. Its installation guide can be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html)
+
+```bash
+conda create -n BCalm_env r-bcalm
+```
+
+#### Using `devtools` or `remotes` + conda
 
 `BCalm` is available from GitHub. Here we give installation instructions using either `devtools` or `remotes`.
 
@@ -27,9 +41,6 @@ After activating the environment (`conda activate BCalm_env`) you can start the 
 install_github("kircherlab/BCalm")
 ```
 
-After installation, you can start using `BCalm` (after loading it with `library(BCalm)`).
-For a more extensive user guide, please see the vignette (installation described below).
-
 
 > **Note:**
 > If you have problems installing BCalm dependencies (e.g. similar to [issue #10](https://github.com/kircherlab/BCalm/issues/10)) you can install them via conda. Due to one dependency (`bioconductor-genomeinfodbdata`) we have to use the gcc7 label for the bioconda channel. R base version might be different to `4.4.0` but BCALm should work on all R versions `bioconductor-mpra` is supported.
@@ -37,6 +48,10 @@ For a more extensive user guide, please see the vignette (installation described
 > conda install -c bioconda/label/gcc7 -c conda-forge bioconductor-mpra r-devtools r-tidyr r-ggplot2 r-dplyr
 > ```
 
+### Loading BCalm
+
+After installation, you can start using `BCalm` (after loading it with `library(BCalm)`).
+For a more extensive user guide, please see the vignette (installation described below).
 
 ### Vignette
 
@@ -54,7 +69,7 @@ devtools::install_github("kircherlab/BCalm", build_vignette=TRUE, dependencies=T
 
 After this you can open the built vignette by `vignette('BCalm')` (Alternatively, we provide a pre-built vignette in `vignettes/BCalm.html`)
 
-You can either follow the prepared vignette directly in the editor of your choice (`vignettes/BCalm.Rmd`) or scroll through it by opening it in your browser (`vignettes/BCalm.html`).
+You can either follow the prepared vignette directly in the editor of your choice (`vignettes/BCalm.Rmd`) or scroll through it by opening it in your browser (`inst/doc//BCalm.html`).
 
 
 ### How to cite: 

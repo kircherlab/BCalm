@@ -1,3 +1,8 @@
-^\.travis\.yml$
+.editorconfig
+.gitignore
+.lintr
+.yamllint.yml
+^\.\.Rcheck
+.git
+.github
 README.md
-

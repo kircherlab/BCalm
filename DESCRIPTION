@@ -1,17 +1,18 @@
 Package: BCalm
 Version: 0.99.0
-Title: Barcode Analysis using linear models
-Description: Tools for data management, count preprocessing, and differential analysis in massively parallel report assays (MPRA).
+Title: Barcode Analysis Using Linear Models
+Description: Tools for data management, count preprocessing, and differential analysis in massively parallel reporter assays (MPRA).
 Authors@R: c(
       person("Pia", "Keukeleire", role = c("cre", "aut"), email = "pia.keukeleire@uksh.de"),
       person("Martin", "Kircher", role = "aut"))
+Author: Pia Keukeleire [cre, aut], Martin Kircher [aut]
+Maintainer: Pia Keukeleire <pia.keukeleire@uksh.de>
 Depends:
       R (>= 3.5),
       methods,
       BiocGenerics,
       SummarizedExperiment,
-      limma,
-      curl
+      limma
 Suggests:
       BiocStyle,
       knitr,
@@ -28,11 +29,8 @@ Imports:
       graphics,
       statmod,
       tidyr,
-      GenomeInfoDb,
-      IRanges,
-      GenomicRanges,
-      Biobase,
-      DelayedArray
+      dplyr,
+      rlang
 Collate:
       mpra_set.R
       utils.R
@@ -40,7 +38,7 @@ Collate:
       preprocess.R
       analyze.R
 VignetteBuilder: knitr
-License: MIT
+License: MIT + file LICENSE
 URL: https://github.com/kircherlab/BCalm
 BugReports: https://github.com/kircherlab/BCalm/issues
 biocViews: Software, GeneRegulation, Sequencing, FunctionalGenomics

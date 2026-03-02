@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(mpra)
+library(BCalm)
 
-test_check("mpra")
+test_check("BCalm")

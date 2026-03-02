@@ -24,6 +24,6 @@ and sample-specific log ratios.
 }
 
 \examples{
-  data(mpraSetAggExample)
+  data("mpraSetAggExample", package = "mpra")
   logr <- compute_logratio(mpraSetAggExample, aggregate = "sum")
 }
