@@ -1,0 +1,26 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/CONFIG-FILES-README.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/articles/BCalm.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/BCalm-package.html</loc></url>
+<url><loc>/reference/BcSetExample.html</loc></url>
+<url><loc>/reference/MPRASet-class.html</loc></url>
+<url><loc>/reference/compute_logratio.html</loc></url>
+<url><loc>/reference/create_dna_df.html</loc></url>
+<url><loc>/reference/create_rna_df.html</loc></url>
+<url><loc>/reference/create_var_df.html</loc></url>
+<url><loc>/reference/downsample_barcodes.html</loc></url>
+<url><loc>/reference/fit_elements.html</loc></url>
+<url><loc>/reference/getLabel.html</loc></url>
+<url><loc>/reference/get_precision_weights.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/mpra_treat.html</loc></url>
+<url><loc>/reference/mpralm.html</loc></url>
+<url><loc>/reference/normalize_counts.html</loc></url>
+<url><loc>/reference/plot_groups.html</loc></url>
+</urlset>
+
