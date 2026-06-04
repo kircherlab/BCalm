@@ -7,6 +7,9 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
     if (!requireNamespace("ggplot2", quietly = TRUE)) {
         stop("The 'ggplot2' package is required but not installed. Please install it.")
     }
+    if (utils::packageVersion("ggplot2") < "3.4.0") {
+        stop("The 'ggplot2' package version must be at least 3.4.0. Please update it.")
+    }
     if (is.null(object$logFC)) {
         stop("Your MPRASet does not contain logFC values. Please run mpralm or fit_elements first.")
     }
