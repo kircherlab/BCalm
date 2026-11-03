@@ -123,3 +123,10 @@ test_that("create_dna_df", {
     expect_equal(create_dna_df(df_dna_4), data.frame(row.names = character()))
     expect_error(create_dna_df(df_dna_5, id_column_name = "variant_id"))
 })
+
+test_that("create_dna_df/create_rna_df sort ids like base R sort() (as mpra does)", {
+  ids <- c("NTC", "Nanog", "nanog2", "Zfp1", "abc")
+  df <- data.frame(element_id = ids, DNA_A = 1:5, RNA_A = 6:10)
+  expect_identical(rownames(create_dna_df(df, id_column_name = "element_id")), sort(ids))
+  expect_identical(rownames(create_rna_df(df, id_column_name = "element_id")), sort(ids))
+})

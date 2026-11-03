@@ -120,8 +120,10 @@ create_var_df <- function(df, map_df) {
             names_prefix = "bc", id_cols = id_column_name
         ) %>%
         rename_with(~ gsub(paste0("(?i)", type), "sample", .)) %>%
-        arrange(!!sym(id_column_name)) %>%
         as.data.frame()
+
+    # Base R ordering (locale-aware) matches mpra's by()/sort(); dplyr::arrange uses C order since dplyr 1.1
+    df_pivot <- df_pivot[order(df_pivot[[id_column_name]]), , drop = FALSE]
 
     row.names(df_pivot) <- df_pivot[, id_column_name]
     df_pivot[, id_column_name] <- NULL

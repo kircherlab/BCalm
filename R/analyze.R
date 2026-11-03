@@ -7,8 +7,8 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
     if (!requireNamespace("ggplot2", quietly = TRUE)) {
         stop("The 'ggplot2' package is required but not installed. Please install it.")
     }
-    if (utils::packageVersion("ggplot2") < "3.4.0") {
-        stop("The 'ggplot2' package version must be at least 3.4.0. Please update it.")
+    if (utils::packageVersion("ggplot2") < "3.3.0") {
+        stop("The 'ggplot2' package version must be at least 3.3.0. Please update it.")
     }
     if (is.null(object$logFC)) {
         stop("Your MPRASet does not contain logFC values. Please run mpralm or fit_elements first.")
@@ -45,9 +45,12 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
         percentile_down <- quantile(object$logFC[object$label == neg_label], 1 - percentile)
         down_label <- paste(1 - percentile, "th percentile of negative controls", sep = "")
 
+        # ggplot2 >= 3.4.0 uses `linewidth` for lines; older versions only know `size`
+        line_width <- if (utils::packageVersion("ggplot2") >= "3.4.0") list(linewidth = 1) else list(size = 1)
+
         plot <- plot +
-            geom_vline(aes(xintercept = percentile_up, color = up_label), linetype = "dashed", size = 1) +
-            geom_vline(aes(xintercept = percentile_down, color = down_label), linetype = "dashed", size = 1) +
+            do.call(geom_vline, c(list(aes(xintercept = percentile_up, color = up_label), linetype = "dashed"), line_width)) +
+            do.call(geom_vline, c(list(aes(xintercept = percentile_down, color = down_label), linetype = "dashed"), line_width)) +
             scale_color_manual(
                 values = setNames(c("green", "orange"), c(up_label, down_label)),
                 guide = guide_legend(override.aes = list(linetype = "dashed"))
