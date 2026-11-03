@@ -123,7 +123,7 @@ create_var_df <- function(df, map_df) {
         as.data.frame()
 
     # Base R ordering (locale-aware) matches mpra's by()/sort(); dplyr::arrange uses C order since dplyr 1.1
-    df_pivot <- df_pivot[order(df_pivot[[id_column_name]]), , drop = FALSE]
+    df_pivot <- df_pivot[order(as.character(df_pivot[[id_column_name]])), , drop = FALSE]
 
     row.names(df_pivot) <- df_pivot[, id_column_name]
     df_pivot[, id_column_name] <- NULL
