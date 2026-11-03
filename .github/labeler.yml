@@ -1,0 +1,10 @@
+---
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - README.md
+          - CONFIG-FILES-README.md
+          - man/**
+          - vignettes/**
+          - inst/CITATION
+          - inst/NEWS.Rd
