@@ -7,6 +7,9 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
     if (!requireNamespace("ggplot2", quietly = TRUE)) {
         stop("The 'ggplot2' package is required but not installed. Please install it.")
     }
+    if (utils::packageVersion("ggplot2") < "3.3.0") {
+        stop("The 'ggplot2' package version must be at least 3.3.0. Please update it.")
+    }
     if (is.null(object$logFC)) {
         stop("Your MPRASet does not contain logFC values. Please run mpralm or fit_elements first.")
     }
@@ -42,9 +45,12 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
         percentile_down <- quantile(object$logFC[object$label == neg_label], 1 - percentile)
         down_label <- paste(1 - percentile, "th percentile of negative controls", sep = "")
 
+        # ggplot2 >= 3.4.0 uses `linewidth` for lines; older versions only know `size`
+        line_width <- if (utils::packageVersion("ggplot2") >= "3.4.0") list(linewidth = 1) else list(size = 1)
+
         plot <- plot +
-            geom_vline(aes(xintercept = percentile_up, color = up_label), linetype = "dashed", size = 1) +
-            geom_vline(aes(xintercept = percentile_down, color = down_label), linetype = "dashed", size = 1) +
+            do.call(geom_vline, c(list(aes(xintercept = percentile_up, color = up_label), linetype = "dashed"), line_width)) +
+            do.call(geom_vline, c(list(aes(xintercept = percentile_down, color = down_label), linetype = "dashed"), line_width)) +
             scale_color_manual(
                 values = setNames(c("green", "orange"), c(up_label, down_label)),
                 guide = guide_legend(override.aes = list(linetype = "dashed"))
@@ -60,6 +66,18 @@ plot_groups <- function(object, percentile = NULL, neg_label = NULL, test_label 
 #   the negative controls in order to work with negative upper thresholds.
 # 	percentile: The percentile of the negative controls to use as the threshold.
 # 	25 November 2024.
+#
+# 	Null hypothesis: the true (centred) effect lies in [lfc_left, lfc_right], where lfc_right and
+# 	lfc_left are the `percentile` and `1 - percentile` quantiles of the centred negative controls.
+# 	For skewed controls |lfc_left| != lfc_right, so the two sides of the null are tested separately.
+# 	With se = stdev.unscaled * sqrt(s2.post) and C the centred coefficient, the p-value is
+# 	  C >= mid: P(T >= (C - lfc_right)/se) + P(T >= (C - lfc_left)/se)
+# 	  C <  mid: P(T <= (C - lfc_left)/se)  + P(T <= (C - lfc_right)/se)
+# 	with mid = (lfc_left + lfc_right)/2 (0 for symmetric thresholds) and T ~ t(df.total).
+# 	The first term tests the side the coefficient lies on; the p-value is always <= 1.
+# 	With symmetric thresholds (lfc_right = -lfc_left) this equals limma::treat.
+# 	t: (|C| - threshold of its own side)/se, positive for up and negative for down, 0 inside the null.
+# 	Fixed 3 November 2026: negative coefficients were previously tested against the wrong thresholds.
 mpra_treat <- function(fit, percentile = 0.975, neg_label, trend = FALSE, robust = FALSE, winsor.tail.p = c(0.05, 0.1)) {
     # 	Check fit
     if (is(fit, "MPRASet")) {
@@ -107,20 +125,28 @@ mpra_treat <- function(fit, percentile = 0.975, neg_label, trend = FALSE, robust
     df.total <- pmin(df.total, df.pooled)
     fit$df.total <- df.total
 
-    acoef <- abs(coefficients)
     se <- stdev.unscaled * sqrt(fit$s2.post)
     lfc_right <- quantile(coefficients_neg, percentile)
     lfc_left <- quantile(coefficients_neg, 1 - percentile)
-    tstat.right <- (acoef - lfc_right) / se
-    tstat.left <- (acoef - lfc_left) / se
+    # The null is lfc_left <= coef <= lfc_right, which is asymmetric for skewed controls.
+    # As in limma::treat, the main term tests against the threshold on the coefficient's own
+    # side and the second term adds the (tiny) probability mass of the opposite side.
+    # "Own side" is decided relative to the midpoint of the null interval (0 for limma::treat);
+    # this keeps p <= 1 and is also correct when lfc_right < 0 for extremely skewed controls.
+    is_up <- coefficients >= (lfc_right + lfc_left) / 2
+    thr_same <- ifelse(is_up, lfc_right, -lfc_left)
+    thr_opp <- ifelse(is_up, -lfc_left, lfc_right)
+    # coefficient expressed as distance in the direction of its own side
+    side_coef <- ifelse(is_up, coefficients, -coefficients)
+    tstat.same <- (side_coef - thr_same) / se
+    tstat.opp <- (side_coef + thr_opp) / se
     fit$t <- array(0, dim(coefficients), dimnames = dimnames(coefficients))
-    fit$p.value <- pt(tstat.right, df = df.total, lower.tail = FALSE) + pt(tstat.left, df = df.total, lower.tail = FALSE)
-    tstat.right <- pmax(tstat.right, 0)
-    tstat.left <- pmax(tstat.left, 0)
+    fit$p.value <- pt(tstat.same, df = df.total, lower.tail = FALSE) + pt(tstat.opp, df = df.total, lower.tail = FALSE)
+    tstat.same <- pmax(tstat.same, 0)
     fc.up <- (coefficients > lfc_right)
     fc.down <- (coefficients < lfc_left)
-    fit$t[fc.up] <- tstat.right[fc.up]
-    fit$t[fc.down] <- tstat.left[fc.down]
+    fit$t[fc.up] <- tstat.same[fc.up]
+    fit$t[fc.down] <- -tstat.same[fc.down]
     fit$treat.lfc_right <- lfc_right
     fit$treat.lfc_left <- lfc_left
     fit

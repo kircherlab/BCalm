@@ -46,3 +46,14 @@ test_that("mpra_treat", {
 
     expect_error(mpra_treat(mpra))
 })
+
+test_that("plot_groups draws percentile lines without ggplot2 deprecation warnings", {
+    skip_if_not_installed("ggplot2")
+    library(ggplot2)
+    df <- data.frame(
+        logFC = c(seq(-1, 1, length.out = 20), seq(0, 3, length.out = 20)),
+        label = rep(c("control", "test"), each = 20)
+    )
+    p <- expect_no_warning(plot_groups(df, percentile = 0.95, neg_label = "control"))
+    expect_no_warning(ggplot2::ggplot_build(p))
+})

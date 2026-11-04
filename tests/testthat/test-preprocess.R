@@ -123,3 +123,24 @@ test_that("create_dna_df", {
     expect_equal(create_dna_df(df_dna_4), data.frame(row.names = character()))
     expect_error(create_dna_df(df_dna_5, id_column_name = "variant_id"))
 })
+
+test_that("create_dna_df/create_rna_df sort ids like base R sort() (as mpra does)", {
+  ids <- c("NTC", "Nanog", "nanog2", "Zfp1", "abc")
+  df <- data.frame(element_id = ids, DNA_A = 1:5, RNA_A = 6:10)
+  expect_identical(rownames(create_dna_df(df, id_column_name = "element_id")), sort(ids))
+  expect_identical(rownames(create_rna_df(df, id_column_name = "element_id")), sort(ids))
+})
+
+test_that("create_dna_df/create_rna_df sort non-character IDs by their character values", {
+  numeric_ids <- c(1, 2, 10)
+  numeric_df <- data.frame(element_id = numeric_ids, DNA_A = 1:3, RNA_A = 4:6)
+  expected <- sort(as.character(numeric_ids))
+  expect_identical(rownames(create_dna_df(numeric_df, id_column_name = "element_id")), expected)
+  expect_identical(rownames(create_rna_df(numeric_df, id_column_name = "element_id")), expected)
+
+  factor_ids <- factor(c("1", "2", "10"), levels = c("2", "10", "1"))
+  factor_df <- data.frame(element_id = factor_ids, DNA_A = 1:3, RNA_A = 4:6)
+  expected <- sort(as.character(factor_ids))
+  expect_identical(rownames(create_dna_df(factor_df, id_column_name = "element_id")), expected)
+  expect_identical(rownames(create_rna_df(factor_df, id_column_name = "element_id")), expected)
+})
